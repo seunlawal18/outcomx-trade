@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Environment secrets
+.env
+.env.local
+.env*.local
+
+# Build output
+dist/
+.next/
+
+# TypeScript incremental build
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
