@@ -99,6 +99,8 @@ export default function HomePage() {
         ? Date.now() - parseApiDate(m.createdAt).getTime() < 48 * 60 * 60 * 1000
         : activeCategory === "closing"
         ? new Date(m.expiresAt).getTime() - Date.now() < 6 * 60 * 60 * 1000
+        : activeCategory === "africa"
+        ? ["nigeria","ghana","kenya","southafrica"].some(r => m.title.toLowerCase().includes(r) || m.category === "economy" || m.category === "politics")
         : m.category === activeCategory;
       const matchDur    = activeDuration === "all" || m.duration === activeDuration;
       const matchSearch = !searchQuery ||
@@ -118,10 +120,11 @@ export default function HomePage() {
 
   const sectionLabel = searchQuery
     ? `Results for "${searchQuery}"`
-    : activeCategory === "new"    ? "New Markets"
+    : activeCategory === "new"     ? "New Markets"
     : activeCategory === "closing" ? "Closing Soon"
-    : activeCategory !== "all"    ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)
-    : activeDuration !== "all"    ? `${activeDuration.toUpperCase()} Markets`
+    : activeCategory === "africa"  ? "🌍 Africa Markets"
+    : activeCategory !== "all"     ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)
+    : activeDuration !== "all"     ? `${activeDuration.toUpperCase()} Markets`
     : "All Markets";
 
   return (

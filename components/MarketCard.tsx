@@ -66,6 +66,8 @@ export default function MarketCard({ market }: Props) {
   // Settled result badge
   const isSettled = market.status === "settled";
   const isClosed  = market.status === "closed";
+  const isClosingSoon = market.status === "open" &&
+    new Date(market.expiresAt).getTime() - Date.now() < 2 * 60 * 60 * 1000;
 
   return (
     <>
@@ -252,7 +254,19 @@ export default function MarketCard({ market }: Props) {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 8, borderTop: "1px solid var(--border)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             {/* Live dot */}
-            {market.status === "open" && <span className="live-dot" />}
+            {market.status === "open" && !isClosingSoon && <span className="live-dot" />}
+
+            {/* Closing soon badge */}
+            {isClosingSoon && (
+              <span style={{
+                fontSize: 10, fontWeight: 700, padding: "1px 7px", borderRadius: 20,
+                textTransform: "uppercase", letterSpacing: "0.4px",
+                background: "rgba(245,158,11,0.12)", color: "#f59e0b",
+                border: "1px solid rgba(245,158,11,0.3)", display: "inline-flex", alignItems: "center", gap: 3,
+              }}>
+                ⏰ Closing Soon
+              </span>
+            )}
 
             {/* Status badge for closed/settled */}
             {(isClosed || isSettled) && (

@@ -11,10 +11,11 @@ import { getSocket } from "@/lib/socket";
 import WalletConnectModal from "./WalletConnectModal";
 import NotificationBell from "./NotificationBell";
 import Logo from "./Logo";
+import HowItWorksModal from "./HowItWorksModal";
 import {
   Search, Wallet, TrendingUp, Sun, Moon,
   Menu, X, BarChart2, ChevronRight, UserCircle,
-  Plus, CheckCircle2, AlertCircle, LogOut, LogIn, UserPlus, Copy, Coins, ExternalLink,
+  Plus, CheckCircle2, AlertCircle, LogOut, LogIn, UserPlus, Copy, Coins, ExternalLink, Info,
 } from "lucide-react";
 
 // Testnet by default (matches where deposit/withdrawal testing currently
@@ -390,6 +391,7 @@ export default function Navbar() {
   const [searchOpen,  setSearchOpen]  = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const isDark = theme === "dark";
 
@@ -425,6 +427,7 @@ export default function Navbar() {
     <>
       {showDeposit     && <DepositModal onClose={() => setShowDeposit(false)} isDark={isDark} />}
       {showWalletModal && <WalletConnectModal onClose={() => setShowWalletModal(false)} />}
+      {showHowItWorks  && <HowItWorksModal onClose={() => setShowHowItWorks(false)} />}
 
       <nav style={{ background: navBg, borderBottom: `1px solid ${navBorder}`, position: "sticky", top: 0, zIndex: 100, transition: "background 0.25s, border-color 0.25s" }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", padding: "0 16px", height: 60, display: "flex", alignItems: "center", gap: 12 }}>
@@ -448,6 +451,29 @@ export default function Navbar() {
           {/* Mobile search */}
           <button className="show-mobile" onClick={() => setSearchOpen(!searchOpen)} style={{ display: "none", width: 36, height: 36, borderRadius: 8, background: iconBg, border: `1px solid ${iconBorder}`, alignItems: "center", justifyContent: "center", cursor: "pointer", color: textSecondary, marginLeft: "auto" }}>
             <Search size={16} />
+          </button>
+
+          {/* How It Works — always visible, desktop only */}
+          <button
+            onClick={() => setShowHowItWorks(true)}
+            className="hide-mobile"
+            style={{
+              display: "flex", alignItems: "center", gap: 6,
+              padding: "6px 14px", borderRadius: 8, fontSize: 13, fontWeight: 600,
+              background: "transparent", border: "1px solid var(--border)",
+              color: "var(--text-secondary)", cursor: "pointer",
+              transition: "all 0.15s", whiteSpace: "nowrap", flexShrink: 0,
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "#10b981";
+              (e.currentTarget as HTMLElement).style.color = "#10b981";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+              (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+            }}
+          >
+            <Info size={14} /> How it works
           </button>
 
           {/* Right side */}
@@ -642,6 +668,15 @@ export default function Navbar() {
                   <ChevronRight size={14} style={{ marginLeft: "auto", color: textSecondary }} />
                 </Link>
               ))}
+              {/* How It Works — mobile */}
+              <button
+                onClick={() => { setMobileOpen(false); setShowHowItWorks(true); }}
+                style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderRadius: 10, color: textPrimary, background: isDark ? "#1f2333" : "#f1f5f9", border: `1px solid ${navBorder}`, fontSize: 15, fontWeight: 500, cursor: "pointer", width: "100%", textAlign: "left" }}
+              >
+                <span style={{ color: "#6366f1" }}><Info size={16} /></span>
+                How It Works
+                <ChevronRight size={14} style={{ marginLeft: "auto", color: textSecondary }} />
+              </button>
               {isLoggedIn && (
                 <button onClick={() => { userLogout(); setMobileOpen(false); }} style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderRadius: 10, color: "var(--red)", background: "var(--red-bg)", border: "1px solid var(--red-border)", fontSize: 15, fontWeight: 500, cursor: "pointer", width: "100%", textAlign: "left" }}>
                   <LogOut size={16} /> Log Out

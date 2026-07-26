@@ -1,6 +1,6 @@
 import {
   Globe, Sparkles, Trophy, Bitcoin, Landmark,
-  LineChart, Gamepad2, Clapperboard, BarChart3, Clock,
+  LineChart, Gamepad2, Clapperboard, BarChart3, Clock, MapPin,
   type LucideIcon,
 } from "lucide-react";
 import { MarketCategory } from "./types";
@@ -9,6 +9,7 @@ export const CATEGORY_ICONS: Record<MarketCategory, LucideIcon> = {
   all:           Globe,
   new:           Sparkles,
   closing:       Clock,
+  africa:        MapPin,
   sports:        Trophy,
   crypto:        Bitcoin,
   politics:      Landmark,

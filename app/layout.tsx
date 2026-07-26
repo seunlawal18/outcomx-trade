@@ -8,8 +8,8 @@ import ToastContainer from "@/components/ToastContainer";
 import Web3Provider from "@/components/providers/Web3Provider";
 
 export const metadata: Metadata = {
-  title: "OUTCOMX — Prediction Markets",
-  description: "Simulated prediction market platform. Trade the future, turn your insights into profit.",
+  title: "OUTCOMX — Trade What Happens Next",
+  description: "Africa-first prediction markets. Research real-world events, take a position on what you think will happen, and profit when you're right.",
 };
 
 export const viewport: Viewport = {

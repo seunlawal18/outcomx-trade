@@ -209,19 +209,31 @@ function TradeForm({
         }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
             <span style={{ fontSize: 12, color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: 5 }}>
-              You win
+              Potential payout
               <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--emerald)", display: "inline-block", animation: "livePulse 1s ease-in-out infinite" }} />
             </span>
             <span style={{ fontSize: 15, fontWeight: 800, color: "var(--emerald)", fontVariantNumeric: "tabular-nums" }}>
               {fmt(lockedPayout)}
             </span>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>Profit</span>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+            <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>Potential profit</span>
             <span style={{ fontSize: 12, fontWeight: 700, color: "var(--emerald)", fontVariantNumeric: "tabular-nums" }}>
               +{fmt(lockedProfit)} ({((lockedProfit / amt) * 100).toFixed(0)}%)
             </span>
           </div>
+          <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 6, borderTop: "1px solid var(--emerald-border)", marginTop: 4 }}>
+            <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Platform fee</span>
+            <span style={{ fontSize: 11, color: "var(--text-muted)" }}>3% (deducted from pool)</span>
+          </div>
+          {market.resolutionSource && (
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+              <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Resolves via</span>
+              <span style={{ fontSize: 11, color: "var(--text-secondary)", fontWeight: 600, maxWidth: 140, textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {market.resolutionSource}
+              </span>
+            </div>
+          )}
         </div>
       )}
 

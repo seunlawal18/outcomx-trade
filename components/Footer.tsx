@@ -5,17 +5,17 @@ import Logo from "@/components/Logo";
 
 const quickLinks = [
   { label: "Browse Markets",   href: "/" },
-  { label: "How It Works",     href: "/#how-it-works" },
-  { label: "Help Center",      href: "#" },
+  { label: "How It Works",     href: "#", onClick: true },
+  { label: "Help Center",      href: "mailto:support@outcomx.io" },
   { label: "Terms of Service", href: "#" },
   { label: "Privacy Policy",   href: "#" },
 ];
 
 const legalLinks = [
-  { label: "Privacy Policy",           href: "#" },
-  { label: "Terms of Service",         href: "#" },
-  { label: "Prohibition Policies",     href: "#" },
-  { label: "Dispute Resolution Policy",href: "#" },
+  { label: "Terms of Service",          href: "#" },
+  { label: "Privacy Policy",            href: "#" },
+  { label: "Prohibition Policies",      href: "#" },
+  { label: "Dispute Resolution Policy", href: "#" },
 ];
 
 function XIcon() {

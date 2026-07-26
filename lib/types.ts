@@ -4,6 +4,7 @@ export type MarketCategory =
   | "all"
   | "new"
   | "closing"
+  | "africa"
   | "sports"
   | "crypto"
   | "politics"
