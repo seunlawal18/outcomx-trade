@@ -69,7 +69,7 @@ function DashboardContent() {
               Welcome back, {userProfile.name.split(" ")[0]} 👋
             </h1>
             <p style={{ fontSize: 14, color: "var(--text-secondary)", margin: "4px 0 0" }}>
-              @{userProfile.username} · {cfg.flag} {cfg.name}
+              @{userProfile.username} · {cfg.flag} {cfg.name} · Trade what happens next
             </p>
           </div>
           <div style={{ marginLeft: "auto", display: "flex", gap: 10 }}>

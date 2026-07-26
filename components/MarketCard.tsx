@@ -279,6 +279,12 @@ export default function MarketCard({ market }: Props) {
           </div>
 
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            {/* Resolution source chip — builds trust at point of discovery */}
+            {market.resolutionSource && (
+              <span style={{ fontSize: 10, color: "var(--text-muted)", background: "var(--bg-card-hover)", border: "1px solid var(--border)", padding: "1px 6px", borderRadius: 10, maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={`Resolved by: ${market.resolutionSource}`}>
+                ✓ {market.resolutionSource}
+              </span>
+            )}
             {market.trending && (
               <span style={{ fontSize: 10, fontWeight: 700, color: "#f59e0b", background: "rgba(245,158,11,0.1)", padding: "1px 6px", borderRadius: 10, border: "1px solid rgba(245,158,11,0.3)" }}>
                 🔥 HOT

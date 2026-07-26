@@ -100,7 +100,7 @@ export default function RegisterPage() {
             <Logo size={42} />
           </Link>
           <p style={{ fontSize: 14, color: "var(--text-secondary)", marginTop: 6 }}>
-            Create your free account · Fund your wallet to start trading
+            Create your free account and take your first position
           </p>
         </div>
 
@@ -231,7 +231,7 @@ export default function RegisterPage() {
               <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
                 <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }} style={{ marginTop: 2, accentColor: "var(--emerald)", width: 16, height: 16, flexShrink: 0 }} />
                 <span style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.5 }}>
-                  I agree to the <Link href="#" style={{ color: "var(--emerald)", textDecoration: "none", fontWeight: 600 }}>Terms of Service</Link> and <Link href="#" style={{ color: "var(--emerald)", textDecoration: "none", fontWeight: 600 }}>Privacy Policy</Link>. This is a simulation platform — no real money.
+                  I agree to the <Link href="#" style={{ color: "var(--emerald)", textDecoration: "none", fontWeight: 600 }}>Terms of Service</Link> and <Link href="#" style={{ color: "var(--emerald)", textDecoration: "none", fontWeight: 600 }}>Privacy Policy</Link>. I confirm I am 18 or older and eligible to participate in my jurisdiction.
                 </span>
               </label>
 
@@ -246,9 +246,9 @@ export default function RegisterPage() {
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10, background: "var(--emerald-bg)", border: "1px solid var(--emerald-border)" }}>
                 <span style={{ fontSize: 22 }}>{regionFlag}</span>
                 <div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: "var(--emerald)", margin: 0 }}>Your wallet starts at $0.00</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "var(--emerald)", margin: 0 }}>You&apos;re almost in.</p>
                   <p style={{ fontSize: 12, color: "var(--text-secondary)", margin: 0 }}>
-                    Deposit funds after signup to start trading
+                    Deposit funds after signup to take your first position.
                   </p>
                 </div>
               </div>

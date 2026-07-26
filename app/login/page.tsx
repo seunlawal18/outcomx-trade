@@ -58,7 +58,7 @@ function LoginForm() {
           <Link href="/" style={{ textDecoration: "none", display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
             <Logo size={44} />
           </Link>
-          <p style={{ fontSize: 14, color: "var(--text-secondary)", marginTop: 8 }}>Sign in to your account</p>
+          <p style={{ fontSize: 14, color: "var(--text-secondary)", marginTop: 8 }}>Sign in to start trading</p>
         </div>
 
         {/* Card */}
@@ -209,7 +209,7 @@ function LoginForm() {
           <Link href="/register" style={{ color: "var(--emerald)", fontWeight: 600, textDecoration: "none" }}>Create one free</Link>
         </p>
         <p style={{ textAlign: "center", marginTop: 6, fontSize: 11, color: "var(--text-muted)" }}>
-          Simulation platform — no real money involved
+          Every market shows resolution rules and sources before you commit.
         </p>
       </div>
     </div>

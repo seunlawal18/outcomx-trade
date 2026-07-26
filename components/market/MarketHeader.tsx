@@ -225,6 +225,15 @@ export default function MarketHeader({ market }: Props) {
               );
             })}
           </div>
+
+          {/* Resolution source — visible at point of decision */}
+          {market.resolutionSource && (
+            <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 6, padding: "8px 12px", borderRadius: 8, background: "var(--bg-card-hover)", border: "1px solid var(--border)" }}>
+              <CheckCircle2 size={12} color="var(--emerald)" />
+              <span style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.4px", fontWeight: 700 }}>Resolution Source:</span>
+              <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>{market.resolutionSource}</span>
+            </div>
+          )}
         </div>
         </div>{/* end padding wrapper */}
       </div>{/* end card */}
