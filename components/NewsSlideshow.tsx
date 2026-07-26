@@ -19,11 +19,11 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    tag: "🔥 HOT MARKET",
-    tagColor: "#f59e0b",
-    headline: "Trade the Future on OUTCOMX",
-    sub: "Prediction markets across sports, crypto, politics & more. Pick your side and trade the outcome.",
-    cta: "Browse Markets",
+    tag: "🌍 AFRICA-FIRST",
+    tagColor: "#10b981",
+    headline: "Trade What Happens Next.",
+    sub: "OutcomX is a prediction market for real-world events. Research, take a position, track market sentiment, and see if your conviction pays off.",
+    cta: "Explore Markets",
     href: "/",
     gradient: "linear-gradient(135deg, #0d1b3e 0%, #0a2a5e 50%, #0d1b3e 100%)",
     icon: <span style={{ fontSize: 64, opacity: 0.15, position: "absolute", right: 40, top: "50%", transform: "translateY(-50%)" }}>₿</span>,
@@ -33,8 +33,8 @@ const slides: Slide[] = [
     id: 2,
     tag: "⚡ LIVE NOW",
     tagColor: "#10b981",
-    headline: "Crypto Markets — Trade in Minutes",
-    sub: "Fast-paced BTC, ETH and crypto prediction markets. 5-minute to daily durations.",
+    headline: "Crypto & Finance Markets",
+    sub: "BTC, ETH, and macroeconomic prediction markets. Fast-paced 5-minute to daily durations.",
     cta: "Trade Crypto",
     href: "/?category=crypto",
     gradient: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
@@ -45,8 +45,8 @@ const slides: Slide[] = [
     id: 3,
     tag: "📈 TRENDING",
     tagColor: "#6366f1",
-    headline: "Sports & Esports Prediction Markets",
-    sub: "Who wins the match? Trade on football, basketball, esports and more.",
+    headline: "Sports & Esports Markets",
+    sub: "Who wins the match? Take a position on football, basketball, esports results and more.",
     cta: "View Sports",
     href: "/?category=sports",
     gradient: "linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #1a0533 100%)",
@@ -57,8 +57,8 @@ const slides: Slide[] = [
     id: 4,
     tag: "🏛️ POLITICS",
     tagColor: "#ef4444",
-    headline: "Political Prediction Markets",
-    sub: "Elections, policy decisions, geopolitical events — trade the outcomes that shape the world.",
+    headline: "Political & Economic Markets",
+    sub: "Elections, policy decisions, inflation, and geopolitical events — trade the outcomes that shape the world.",
     cta: "Trade Politics",
     href: "/?category=politics",
     gradient: "linear-gradient(135deg, #1a0a0a 0%, #3d1515 50%, #1a0a0a 100%)",
@@ -67,10 +67,10 @@ const slides: Slide[] = [
   },
   {
     id: 5,
-    tag: "🌟 FEATURED",
+    tag: "🌟 GET STARTED",
     tagColor: "#f59e0b",
-    headline: "New to OUTCOMX? Start Here",
-    sub: "Register free and get a starting balance to trade on real prediction markets instantly.",
+    headline: "New to Prediction Markets?",
+    sub: "Register free, get a starting balance, and place your first position on a real market in under 2 minutes.",
     cta: "Sign Up Free",
     href: "/register",
     gradient: "linear-gradient(135deg, #0d1f0d 0%, #0a3d1a 50%, #0d1f0d 100%)",
@@ -79,11 +79,10 @@ const slides: Slide[] = [
   },
 ];
 
-const SHOW_AFTER_MS = 3 * 60 * 1000; // 3 minutes
 const AUTO_ADVANCE_MS = 5000;
 
 export default function NewsSlideshow() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [dismissed, setDismissed] = useState(false);
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -91,14 +90,6 @@ export default function NewsSlideshow() {
   const router = useRouter();
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // Show after 3 minutes
-  useEffect(() => {
-    const t = setTimeout(() => {
-      if (!dismissed) setVisible(true);
-    }, SHOW_AFTER_MS);
-    return () => clearTimeout(t);
-  }, [dismissed]);
 
   // Auto-advance + progress bar
   useEffect(() => {

@@ -4,11 +4,11 @@ import { ArrowUp, Mail, MapPin } from "lucide-react";
 import Logo from "@/components/Logo";
 
 const quickLinks = [
-  { label: "FAQs",               href: "#" },
-  { label: "Blog",               href: "#" },
-  { label: "Careers",            href: "#" },
-  { label: "Help Center",        href: "#" },
-  { label: "API Documentation",  href: "#" },
+  { label: "Browse Markets",   href: "/" },
+  { label: "How It Works",     href: "/#how-it-works" },
+  { label: "Help Center",      href: "#" },
+  { label: "Terms of Service", href: "#" },
+  { label: "Privacy Policy",   href: "#" },
 ];
 
 const legalLinks = [
@@ -76,7 +76,7 @@ export default function Footer() {
               marginBottom: 12, marginTop: 2,
               letterSpacing: "0.3px",
             }}>
-              Formerly OutcomX Beta
+              Africa-first prediction markets
             </p>
 
             <p style={{
@@ -85,7 +85,7 @@ export default function Footer() {
               lineHeight: 1.75,
               marginBottom: 22,
             }}>
-              The future of prediction markets. Trade the future, and turn your insights into profit.
+              Trade what happens next. Explore real-world questions, research the outcomes, and take a position on what you think will happen.
             </p>
 
             {/* Social icons */}
@@ -185,8 +185,6 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-
-          {/* Contact */}
           <div>
             <h4 style={{
               fontSize: 13, fontWeight: 700,

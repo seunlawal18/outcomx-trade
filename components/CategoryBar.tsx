@@ -8,13 +8,14 @@ import { useScrollDirection } from "@/lib/useScrollDirection";
 const categories: { id: MarketCategory; label: string; badge?: string }[] = [
   { id: "all",           label: "All" },
   { id: "new",           label: "New", badge: "NEW" },
+  { id: "closing",       label: "Closing Soon" },
   { id: "sports",        label: "Sports" },
   { id: "crypto",        label: "Crypto" },
   { id: "politics",      label: "Politics" },
   { id: "finance",       label: "Finance" },
+  { id: "economy",       label: "Economy" },
   { id: "esports",       label: "Esports" },
   { id: "entertainment", label: "Entertainment" },
-  { id: "economy",       label: "Economy" },
 ];
 
 export default function CategoryBar() {

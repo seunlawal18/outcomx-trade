@@ -1,16 +1,14 @@
 import {
   Globe, Sparkles, Trophy, Bitcoin, Landmark,
-  LineChart, Gamepad2, Clapperboard, BarChart3,
+  LineChart, Gamepad2, Clapperboard, BarChart3, Clock,
   type LucideIcon,
 } from "lucide-react";
 import { MarketCategory } from "./types";
 
-// ── Category icons ───────────────────────────────────────────────
-// Single source of truth — used by CategoryBar, MarketCard, and
-// MarketHeader so category iconography stays consistent everywhere.
 export const CATEGORY_ICONS: Record<MarketCategory, LucideIcon> = {
   all:           Globe,
   new:           Sparkles,
+  closing:       Clock,
   sports:        Trophy,
   crypto:        Bitcoin,
   politics:      Landmark,

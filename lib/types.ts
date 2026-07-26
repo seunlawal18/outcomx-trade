@@ -3,6 +3,7 @@ export type MarketStatus = "open" | "closed" | "settled";
 export type MarketCategory =
   | "all"
   | "new"
+  | "closing"
   | "sports"
   | "crypto"
   | "politics"
