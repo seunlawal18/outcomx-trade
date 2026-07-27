@@ -151,8 +151,8 @@ export default function HomePage() {
           width: 160px;
           flex-shrink: 0;
           position: sticky;
-          top: 106px;
-          height: calc(100vh - 106px);
+          top: 134px;
+          height: calc(100vh - 134px);
           overflow-y: auto;
           align-self: flex-start;
         }

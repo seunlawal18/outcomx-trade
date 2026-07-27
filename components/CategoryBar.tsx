@@ -43,7 +43,7 @@ export default function CategoryBar() {
         borderBottom: `1px solid ${isDark ? "#2a2d3a" : "#e2e8f0"}`,
         transition: "background 0.25s, border-color 0.25s, transform 0.28s ease",
         position: "sticky",
-        top: 60,
+        top: 88,
         zIndex: 95,
       }}
     >

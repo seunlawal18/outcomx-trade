@@ -6,6 +6,7 @@ import RealtimeSync from "@/components/RealtimeSync";
 import VerificationBanner from "@/components/VerificationBanner";
 import ToastContainer from "@/components/ToastContainer";
 import Web3Provider from "@/components/providers/Web3Provider";
+import LiveTicker from "@/components/LiveTicker";
 
 export const metadata: Metadata = {
   title: "OUTCOMX — Trade What Happens Next",

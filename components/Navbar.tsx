@@ -12,6 +12,7 @@ import WalletConnectModal from "./WalletConnectModal";
 import NotificationBell from "./NotificationBell";
 import Logo from "./Logo";
 import HowItWorksModal from "./HowItWorksModal";
+import LiveTicker from "./LiveTicker";
 import {
   Search, Wallet, TrendingUp, Sun, Moon,
   Menu, X, BarChart2, ChevronRight, UserCircle,
@@ -610,6 +611,9 @@ export default function Navbar() {
             </div>
           </div>
         )}
+
+        {/* Live ticker — second row of the sticky nav */}
+        <LiveTicker />
       </nav>
 
       {/* Mobile drawer */}
