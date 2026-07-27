@@ -427,7 +427,7 @@ export default function Navbar() {
     <>
       {showDeposit     && <DepositModal onClose={() => setShowDeposit(false)} isDark={isDark} />}
       {showWalletModal && <WalletConnectModal onClose={() => setShowWalletModal(false)} />}
-      {showHowItWorks  && <HowItWorksModal onClose={() => setShowHowItWorks(false)} />}
+      {showHowItWorks  && <HowItWorksModal onClose={() => setShowHowItWorks(false)} onOpenDeposit={() => { setShowHowItWorks(false); setShowDeposit(true); }} />}
 
       <nav style={{ background: navBg, borderBottom: `1px solid ${navBorder}`, position: "sticky", top: 0, zIndex: 100, transition: "background 0.25s, border-color 0.25s" }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", padding: "0 16px", height: 60, display: "flex", alignItems: "center", gap: 12 }}>

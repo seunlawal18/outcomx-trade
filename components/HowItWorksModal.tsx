@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { X, TrendingUp, TrendingDown, ChevronRight } from "lucide-react";
+import { X, ChevronRight } from "lucide-react";
+import { useStore } from "@/lib/store";
 
 interface Props {
   onClose: () => void;
+  onOpenDeposit?: () => void;
 }
 
 const steps = [
@@ -99,15 +101,26 @@ const steps = [
   },
 ];
 
-export default function HowItWorksModal({ onClose }: Props) {
+export default function HowItWorksModal({ onClose, onOpenDeposit }: Props) {
   const [step, setStep] = useState(0);
   const router = useRouter();
+  const { isLoggedIn } = useStore();
   const current = steps[step];
   const isLast = step === steps.length - 1;
 
   const handleGetStarted = () => {
     onClose();
-    router.push("/register");
+    if (isLoggedIn) {
+      // User is logged in — open the deposit modal so they can fund and trade
+      if (onOpenDeposit) {
+        onOpenDeposit();
+      } else {
+        router.push("/dashboard");
+      }
+    } else {
+      // Not logged in — send to register
+      router.push("/register");
+    }
   };
 
   return (
@@ -220,6 +233,15 @@ export default function HowItWorksModal({ onClose }: Props) {
             </div>
           )}
 
+          {/* CTA hint on last step */}
+          {isLast && (
+            <p style={{ fontSize: 12, color: "#4a4d5a", textAlign: "center", margin: "-8px 0 12px" }}>
+              {isLoggedIn
+                ? "You're signed in — add funds to start taking positions."
+                : "Free to join. No deposit needed to browse markets."}
+            </p>
+          )}
+
           {/* Navigation */}
           <div style={{ display: "flex", gap: 10 }}>
             {step > 0 && (
@@ -256,7 +278,7 @@ export default function HowItWorksModal({ onClose }: Props) {
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 }}
               >
-                Get Started →
+                {isLoggedIn ? "Deposit & Start Trading →" : "Create Free Account →"}
               </button>
             )}
           </div>
