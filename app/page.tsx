@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import Navbar from "@/components/Navbar";
@@ -11,52 +11,10 @@ import MobileDurationBar from "@/components/MobileDurationBar";
 import NewsSlideshow from "@/components/NewsSlideshow";
 import { MarketGridSkeleton } from "@/components/MarketCardSkeleton";
 import { parseApiDate } from "@/lib/types";
-import { Flame, TrendingUp, Search, ArrowRight, BookOpen, BarChart2, CheckCircle2, Clock } from "lucide-react";
+import { Flame, TrendingUp, ArrowRight, Clock } from "lucide-react";
 
-// ── How It Works strip ───────────────────────────────────────────
-function HowItWorks() {
-  const steps = [
-    { icon: <Search size={20} color="#10b981" />, label: "Discover", desc: "Find a real-world question you have a view on." },
-    { icon: <BookOpen size={20} color="#6366f1" />, label: "Research", desc: "Read the market brief, sources, and resolution rules." },
-    { icon: <BarChart2 size={20} color="#f59e0b" />, label: "Take a Position", desc: "Pick YES or NO and commit your conviction." },
-    { icon: <TrendingUp size={20} color="#3b82f6" />, label: "Track", desc: "Watch market probability shift in real time." },
-    { icon: <CheckCircle2 size={20} color="#10b981" />, label: "Resolve & Learn", desc: "Outcome is settled transparently. Profit or learn." },
-  ];
-
-  return (
-    <section style={{
-      borderTop: "1px solid var(--border)",
-      borderBottom: "1px solid var(--border)",
-      padding: "28px 20px",
-      background: "var(--bg-secondary)",
-      marginBottom: 0,
-    }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: 18, textAlign: "center" }}>
-          How It Works
-        </p>
-        <div className="how-it-works-grid">
-          {steps.map((step, i) => (
-            <div key={step.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative" }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: "var(--bg-card)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
-                {step.icon}
-              </div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", margin: "0 0 4px" }}>{step.label}</p>
-              <p style={{ fontSize: 12, color: "var(--text-secondary)", margin: 0, lineHeight: 1.5 }}>{step.desc}</p>
-              {i < steps.length - 1 && (
-                <ArrowRight size={14} color="var(--border)" style={{ position: "absolute", right: -10, top: 14, display: "var(--arrow-display, block)" }} />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ── Empty state ─────────────────────────────────────────────────
-function EmptyState({ filtered, searchQuery, activeCategory }: { filtered: number; searchQuery: string; activeCategory: string }) {
-  if (filtered > 0) return null;
+// ── Empty state ──────────────────────────────────────────────────
+function EmptyState({ searchQuery, activeCategory }: { searchQuery: string; activeCategory: string }) {
   return (
     <div style={{ textAlign: "center", padding: "64px 20px" }}>
       <div style={{ width: 64, height: 64, borderRadius: 16, background: "var(--bg-card)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
@@ -81,6 +39,7 @@ function EmptyState({ filtered, searchQuery, activeCategory }: { filtered: numbe
   );
 }
 
+// ── Homepage ─────────────────────────────────────────────────────
 export default function HomePage() {
   const { markets, marketsLoaded, activeCategory, activeDuration, searchQuery, checkExpiredMarkets } = useStore();
 
@@ -100,7 +59,11 @@ export default function HomePage() {
         : activeCategory === "closing"
         ? new Date(m.expiresAt).getTime() - Date.now() < 6 * 60 * 60 * 1000
         : activeCategory === "africa"
-        ? ["nigeria","ghana","kenya","southafrica"].some(r => m.title.toLowerCase().includes(r) || m.category === "economy" || m.category === "politics")
+        ? ["nigeria","ghana","kenya","southafrica"].some(r =>
+            m.title.toLowerCase().includes(r) ||
+            m.category === "economy" ||
+            m.category === "politics"
+          )
         : m.category === activeCategory;
       const matchDur    = activeDuration === "all" || m.duration === activeDuration;
       const matchSearch = !searchQuery ||
@@ -116,7 +79,6 @@ export default function HomePage() {
   );
 
   const showTrending = activeCategory === "all" && activeDuration === "all" && !searchQuery && trending.length > 0;
-  const showHowItWorks = activeCategory === "all" && activeDuration === "all" && !searchQuery;
 
   const sectionLabel = searchQuery
     ? `Results for "${searchQuery}"`
@@ -133,7 +95,6 @@ export default function HomePage() {
       <CategoryBar />
       <MobileDurationBar />
       <NewsSlideshow />
-      {showHowItWorks && <HowItWorks />}
 
       <div style={{ display: "flex", width: "100%" }}>
         <div className="duration-sidebar-wrap">
@@ -173,7 +134,7 @@ export default function HomePage() {
             {!marketsLoaded ? (
               <MarketGridSkeleton />
             ) : filtered.length === 0 ? (
-              <EmptyState filtered={filtered.length} searchQuery={searchQuery} activeCategory={activeCategory} />
+              <EmptyState searchQuery={searchQuery} activeCategory={activeCategory} />
             ) : (
               <div className="markets-grid fade-in">
                 {filtered.map((m) => <MarketCard key={m.id} market={m} />)}
@@ -194,23 +155,6 @@ export default function HomePage() {
           height: calc(100vh - 106px);
           overflow-y: auto;
           align-self: flex-start;
-        }
-        .how-it-works-grid {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 16px;
-          --arrow-display: block;
-        }
-        @media (max-width: 900px) {
-          .how-it-works-grid {
-            grid-template-columns: repeat(3, 1fr);
-            --arrow-display: none;
-          }
-        }
-        @media (max-width: 600px) {
-          .how-it-works-grid {
-            grid-template-columns: 1fr 1fr;
-          }
         }
         @media (max-width: 768px) {
           .duration-sidebar-wrap { display: none !important; }
