@@ -40,8 +40,13 @@ function marketToSlide(m: ApiMarket & {
     economy: "#10b981", finance: "#3b82f6", entertainment: "#f59e0b", esports: "#8b5cf6",
   };
   const tags: Record<string, string> = {
-    sports: "⚽ SPORTS", crypto: "₿ CRYPTO", politics: "🏛️ POLITICS",
-    economy: "📈 ECONOMY", finance: "💰 FINANCE", entertainment: "🎬 ENTERTAINMENT", esports: "🎮 ESPORTS",
+    sports:        "SPORTS",
+    crypto:        "CRYPTO",
+    politics:      "POLITICS",
+    economy:       "ECONOMY",
+    finance:       "FINANCE",
+    entertainment: "ENTERTAINMENT",
+    esports:       "ESPORTS",
   };
   const cat = m.category.toLowerCase();
   const firstOpt = m.options[0];
@@ -67,7 +72,7 @@ function marketToSlide(m: ApiMarket & {
 const FALLBACK_SLIDES: Slide[] = [
   {
     id: 0,
-    tag: "🌍 AFRICA-FIRST",
+    tag: "AFRICA-FIRST",
     tagColor: "#10b981",
     headline: "Trade What Happens Next.",
     sub: "OutcomX is a prediction market for real-world events. Research, take a position, track market sentiment, and see if your conviction pays off.",
@@ -79,7 +84,7 @@ const FALLBACK_SLIDES: Slide[] = [
   },
   {
     id: 0,
-    tag: "⚡ LIVE NOW",
+    tag: "LIVE NOW",
     tagColor: "#10b981",
     headline: "Crypto & Finance Markets",
     sub: "BTC, ETH, and macroeconomic prediction markets. Fast-paced 5-minute to daily durations.",
@@ -91,7 +96,7 @@ const FALLBACK_SLIDES: Slide[] = [
   },
   {
     id: 0,
-    tag: "📈 TRENDING",
+    tag: "TRENDING",
     tagColor: "#6366f1",
     headline: "Sports & Esports Markets",
     sub: "Who wins the match? Take a position on football, basketball, esports results and more.",
@@ -103,7 +108,7 @@ const FALLBACK_SLIDES: Slide[] = [
   },
   {
     id: 0,
-    tag: "🏛️ POLITICS",
+    tag: "POLITICS",
     tagColor: "#ef4444",
     headline: "Political & Economic Markets",
     sub: "Elections, policy decisions, inflation, and geopolitical events — trade the outcomes that shape the world.",
@@ -115,7 +120,7 @@ const FALLBACK_SLIDES: Slide[] = [
   },
   {
     id: 0,
-    tag: "🌟 GET STARTED",
+    tag: "GET STARTED",
     tagColor: "#f59e0b",
     headline: "New to Prediction Markets?",
     sub: "Register free, get a starting balance, and place your first position on a real market in under 2 minutes.",
