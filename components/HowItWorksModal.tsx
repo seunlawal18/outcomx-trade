@@ -148,7 +148,7 @@ export default function HowItWorksModal({ onClose, onOpenDeposit }: Props) {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: "1px solid #2a2d3a" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 800, color: "#10b981", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.3)", padding: "2px 10px", borderRadius: 20 }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: "var(--accent)", background: "var(--accent-bg)", border: "1px solid var(--accent-border)", padding: "2px 10px", borderRadius: 20 }}>
               HOW IT WORKS
             </span>
           </div>
@@ -162,7 +162,7 @@ export default function HowItWorksModal({ onClose, onOpenDeposit }: Props) {
                   style={{
                     width: i === step ? 20 : 7,
                     height: 7, borderRadius: 4,
-                    background: i === step ? "#10b981" : "#2a2d3a",
+                    background: i === step ? "var(--accent)" : "#2a2d3a",
                     border: "none", cursor: "pointer", padding: 0,
                     transition: "all 0.3s ease",
                   }}
@@ -261,7 +261,7 @@ export default function HowItWorksModal({ onClose, onOpenDeposit }: Props) {
                 onClick={() => setStep(s => s + 1)}
                 style={{
                   flex: 1, padding: "12px 20px", borderRadius: 10, fontSize: 14, fontWeight: 700,
-                  background: "#10b981", border: "none", color: "#fff",
+                  background: "var(--accent)", border: "none", color: "#fff",
                   cursor: "pointer", transition: "all 0.15s",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 }}
@@ -273,7 +273,7 @@ export default function HowItWorksModal({ onClose, onOpenDeposit }: Props) {
                 onClick={handleGetStarted}
                 style={{
                   flex: 1, padding: "12px 20px", borderRadius: 10, fontSize: 15, fontWeight: 800,
-                  background: "#10b981", border: "none", color: "#fff",
+                  background: "var(--accent)", border: "none", color: "#fff",
                   cursor: "pointer", transition: "all 0.15s",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 }}

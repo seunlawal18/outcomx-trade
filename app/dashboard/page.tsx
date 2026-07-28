@@ -56,7 +56,7 @@ function DashboardContent() {
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28, flexWrap: "wrap" }}>
           <div style={{
             width: 56, height: 56, borderRadius: "50%", flexShrink: 0,
-            background: userProfile.avatar ? "transparent" : "linear-gradient(135deg, #10b981, #059669)",
+            background: userProfile.avatar ? "transparent" : "linear-gradient(135deg, #6c63ff, #4840d6)",
             display: "flex", alignItems: "center", justifyContent: "center",
             overflow: "hidden", border: "2px solid var(--emerald-border)",
           }}>
@@ -84,7 +84,7 @@ function DashboardContent() {
             <Link href="/" style={{
               display: "inline-flex", alignItems: "center", gap: 6,
               padding: "9px 16px", borderRadius: 10, fontSize: 13, fontWeight: 700,
-              background: "var(--emerald)", color: "#fff", textDecoration: "none",
+              background: "var(--accent)", color: "#fff", textDecoration: "none",
             }}>
               <TrendingUp size={14} /> Browse Markets
             </Link>
@@ -146,7 +146,7 @@ function DashboardContent() {
                 <p style={{ fontSize: 13, color: "var(--text-secondary)", margin: "0 0 14px" }}>
                   Browse markets and place your first trade
                 </p>
-                <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 8, background: "var(--emerald)", color: "#fff", textDecoration: "none", fontSize: 13, fontWeight: 700 }}>
+                <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 8, background: "var(--accent)", color: "#fff", textDecoration: "none", fontSize: 13, fontWeight: 700 }}>
                   Browse Markets <ArrowRight size={13} />
                 </Link>
               </div>
@@ -166,8 +166,8 @@ function DashboardContent() {
                             {myTrades.map(t => (
                               <span key={t.id} style={{
                                 fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 6,
-                                background: "var(--emerald-bg)", color: "var(--emerald)",
-                                border: "1px solid var(--emerald-border)",
+                                background: "var(--accent-bg)", color: "var(--accent)",
+                                border: "1px solid var(--accent-border)",
                               }}>
                                 {t.option} · {fmtUSD(t.amount)}
                               </span>

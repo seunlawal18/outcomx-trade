@@ -309,7 +309,7 @@ function DepositModal({ onClose, isDark }: { onClose: () => void; isDark: boolea
       <div onClick={e => e.stopPropagation()} className="fade-in" style={{ background: bg, border: `1px solid ${border}`, borderRadius: 16, padding: 28, width: "100%", maxWidth: 380, boxShadow: "0 24px 64px rgba(0,0,0,0.4)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 38, height: 38, borderRadius: 10, background: "linear-gradient(135deg, #10b981, #059669)", display: "flex", alignItems: "center", justifyContent: "center" }}><Wallet size={18} color="white" /></div>
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: "linear-gradient(135deg, #6c63ff, #4840d6)", display: "flex", alignItems: "center", justifyContent: "center" }}><Wallet size={18} color="white" /></div>
             <div>
               <h2 style={{ fontSize: 16, fontWeight: 700, color: text, margin: 0 }}>{tab === "withdraw" ? "Withdraw Funds" : "Deposit Funds"}</h2>
               <p style={{ fontSize: 12, color: sub, margin: 0 }}>
@@ -466,8 +466,8 @@ export default function Navbar() {
               transition: "all 0.15s", whiteSpace: "nowrap", flexShrink: 0,
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.borderColor = "#10b981";
-              (e.currentTarget as HTMLElement).style.color = "#10b981";
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+              (e.currentTarget as HTMLElement).style.color = "var(--accent)";
             }}
             onMouseLeave={e => {
               (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
@@ -487,20 +487,20 @@ export default function Navbar() {
                     already shows balance + a Deposit button, so this would
                     just be a duplicate fighting for the same cramped row. */}
                 <div className="hide-mobile" style={{ display: "flex", alignItems: "center" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: "8px 0 0 8px", padding: "6px 12px", borderRight: "none" }}>
-                    <Wallet size={14} color="#10b981" />
-                    <span style={{ color: "#10b981", fontWeight: 700, fontSize: 13 }}>{fmtUSD(balance)}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(108,99,255,0.1)", border: "1px solid rgba(108,99,255,0.3)", borderRadius: "8px 0 0 8px", padding: "6px 12px", borderRight: "none" }}>
+                    <Wallet size={14} color="var(--accent)" />
+                    <span style={{ color: "var(--accent)", fontWeight: 700, fontSize: 13 }}>{fmtUSD(balance)}</span>
                   </div>
-                  <button onClick={() => setShowDeposit(true)} title="Deposit" style={{ height: 34, width: 30, background: "#10b981", border: "1px solid #10b981", borderRadius: "0 8px 8px 0", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.15s", flexShrink: 0 }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "#059669")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "#10b981")}>
+                  <button onClick={() => setShowDeposit(true)} title="Deposit" style={{ height: 34, width: 30, background: "var(--accent)", border: "1px solid var(--accent)", borderRadius: "0 8px 8px 0", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.15s", flexShrink: 0 }}
+                    onMouseEnter={e => (e.currentTarget.style.background = "var(--accent-dark)")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "var(--accent)")}>
                     <Plus size={15} strokeWidth={2.5} />
                   </button>
                 </div>
 
                 {/* Mobile: compact deposit-only shortcut, since the balance+deposit
                     pill above is hidden and the drawer takes an extra tap. */}
-                <button className="show-mobile" onClick={() => setShowDeposit(true)} title="Deposit" aria-label="Deposit" style={{ display: "none", width: 36, height: 36, borderRadius: 8, background: "#10b981", border: "1px solid #10b981", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", flexShrink: 0 }}>
+                <button className="show-mobile" onClick={() => setShowDeposit(true)} title="Deposit" aria-label="Deposit" style={{ display: "none", width: 36, height: 36, borderRadius: 8, background: "var(--accent)", border: "1px solid var(--accent)", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", flexShrink: 0 }}>
                   <Plus size={17} strokeWidth={2.5} />
                 </button>
 
@@ -517,7 +517,7 @@ export default function Navbar() {
                 {/* Avatar dropdown — hidden on mobile, duplicated by the
                     drawer's header (avatar/name/balance) + My Profile link. */}
                 <div ref={profileRef} className="hide-mobile" style={{ position: "relative" }}>
-                  <button onClick={() => setShowProfile(!showProfile)} style={{ width: 36, height: 36, borderRadius: "50%", background: userProfile.avatar ? "transparent" : "linear-gradient(135deg, #10b981, #059669)", border: `2px solid ${iconBorder}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", overflow: "hidden", padding: 0 }}>
+                  <button onClick={() => setShowProfile(!showProfile)} style={{ width: 36, height: 36, borderRadius: "50%", background: userProfile.avatar ? "transparent" : "linear-gradient(135deg, #6c63ff, #4840d6)", border: `2px solid ${iconBorder}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", overflow: "hidden", padding: 0 }}>
                     {userProfile.avatar
                       ? <img src={userProfile.avatar} alt="avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       : <span style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>{initials}</span>}
@@ -628,15 +628,15 @@ export default function Navbar() {
 
             {isLoggedIn ? (
               /* Logged-in drawer header */
-              <div style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 10, padding: "12px 14px", marginBottom: 20 }}>
-                <div style={{ width: 38, height: 38, borderRadius: "50%", flexShrink: 0, background: userProfile.avatar ? "transparent" : "linear-gradient(135deg, #10b981, #059669)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(108,99,255,0.1)", border: "1px solid rgba(108,99,255,0.3)", borderRadius: 10, padding: "12px 14px", marginBottom: 20 }}>
+                <div style={{ width: 38, height: 38, borderRadius: "50%", flexShrink: 0, background: userProfile.avatar ? "transparent" : "linear-gradient(135deg, #6c63ff, #4840d6)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
                   {userProfile.avatar ? <img src={userProfile.avatar} alt="avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ fontSize: 14, fontWeight: 800, color: "#fff" }}>{initials}</span>}
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: 13, fontWeight: 700, color: textPrimary, margin: 0 }}>{userProfile.name}</p>
-                  <p style={{ fontSize: 12, color: "#10b981", margin: 0, fontWeight: 600 }}>{fmtUSD(balance)}</p>
+                  <p style={{ fontSize: 12, color: "var(--accent)", margin: 0, fontWeight: 600 }}>{fmtUSD(balance)}</p>
                 </div>
-                <button onClick={() => { setMobileOpen(false); setShowDeposit(true); }} style={{ display: "flex", alignItems: "center", gap: 5, padding: "7px 12px", borderRadius: 8, background: "#10b981", border: "none", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0 }}>
+                <button onClick={() => { setMobileOpen(false); setShowDeposit(true); }} style={{ display: "flex", alignItems: "center", gap: 5, padding: "7px 12px", borderRadius: 8, background: "var(--accent)", border: "none", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0 }}>
                   <Plus size={13} /> Deposit
                 </button>
               </div>
@@ -648,7 +648,7 @@ export default function Navbar() {
                   <Link href="/login" onClick={() => setMobileOpen(false)} style={{ flex: 1, textAlign: "center", padding: "11px", borderRadius: 10, fontSize: 14, fontWeight: 600, background: iconBg, color: textPrimary, border: `1px solid ${iconBorder}`, cursor: "pointer", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
                     <LogIn size={14} /> Log In
                   </Link>
-                  <Link href="/register" onClick={() => setMobileOpen(false)} style={{ flex: 1, textAlign: "center", padding: "11px", borderRadius: 10, fontSize: 14, fontWeight: 700, background: "var(--emerald)", color: "#fff", border: "none", cursor: "pointer", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                  <Link href="/register" onClick={() => setMobileOpen(false)} style={{ flex: 1, textAlign: "center", padding: "11px", borderRadius: 10, fontSize: 14, fontWeight: 700, background: "var(--accent)", color: "#fff", border: "none", cursor: "pointer", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
                     <UserPlus size={14} /> Sign Up
                   </Link>
                 </div>

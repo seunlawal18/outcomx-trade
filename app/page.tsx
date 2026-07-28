@@ -31,7 +31,7 @@ function EmptyState({ searchQuery, activeCategory }: { searchQuery: string; acti
           : "Markets are being prepared. Come back shortly — new questions drop regularly."}
       </p>
       {activeCategory !== "all" && (
-        <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", borderRadius: 8, background: "var(--emerald)", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 700 }}>
+        <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", borderRadius: 8, background: "var(--accent)", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 700 }}>
           Browse All Markets <ArrowRight size={14} />
         </Link>
       )}

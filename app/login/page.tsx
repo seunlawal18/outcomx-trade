@@ -107,8 +107,8 @@ function LoginForm() {
                           gap: 10, transition: "all 0.15s", textAlign: "left",
                         }}
                         onMouseEnter={e => {
-                          (e.currentTarget as HTMLElement).style.borderColor = "var(--emerald)";
-                          (e.currentTarget as HTMLElement).style.background = "var(--emerald-bg)";
+                          (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                          (e.currentTarget as HTMLElement).style.background = "var(--accent-bg)";
                         }}
                         onMouseLeave={e => {
                           (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
@@ -156,7 +156,7 @@ function LoginForm() {
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                   <p style={{ fontSize: 12, color: "var(--text-secondary)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", margin: 0 }}>Password</p>
-                  <Link href="#" style={{ fontSize: 12, color: "var(--emerald)", textDecoration: "none" }}>Forgot password?</Link>
+                  <Link href="#" style={{ fontSize: 12, color: "var(--accent)", textDecoration: "none" }}>Forgot password?</Link>
                 </div>
                 <div style={{ position: "relative" }}>
                   <Lock size={15} style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
@@ -195,7 +195,7 @@ function LoginForm() {
                   background: "var(--bg-card-hover)", border: "1px solid var(--border)",
                   color: "var(--text-secondary)", cursor: "pointer", transition: "all 0.2s",
                 }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--emerald)"; (e.currentTarget as HTMLElement).style.color = "var(--emerald)"; }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
               >
                 <Wallet size={15} /> Connect Wallet
@@ -206,7 +206,7 @@ function LoginForm() {
 
         <p style={{ textAlign: "center", marginTop: 20, fontSize: 14, color: "var(--text-secondary)" }}>
           Don&apos;t have an account?{" "}
-          <Link href="/register" style={{ color: "var(--emerald)", fontWeight: 600, textDecoration: "none" }}>Create one free</Link>
+          <Link href="/register" style={{ color: "var(--accent)", fontWeight: 600, textDecoration: "none" }}>Create one free</Link>
         </p>
         <p style={{ textAlign: "center", marginTop: 6, fontSize: 11, color: "var(--text-muted)" }}>
           Every market shows resolution rules and sources before you commit.

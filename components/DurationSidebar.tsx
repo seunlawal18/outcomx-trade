@@ -76,8 +76,8 @@ export default function DurationSidebar() {
                 padding: "8px 10px",
                 borderRadius: 8,
                 border: "none",
-                background: active ? "var(--emerald-bg)" : "transparent",
-                color: active ? "var(--emerald)" : "var(--text-secondary)",
+                background: active ? "var(--accent-bg)" : "transparent",
+                color: active ? "var(--accent)" : "var(--text-secondary)",
                 cursor: "pointer",
                 fontSize: 13,
                 fontWeight: active ? 700 : 500,
@@ -102,7 +102,7 @@ export default function DurationSidebar() {
               <span style={{ flex: 1 }}>{label}</span>
               {count > 0 && (
                 <span style={{
-                  fontSize: 11, color: active ? "var(--emerald)" : "var(--text-muted)",
+                  fontSize: 11, color: active ? "var(--accent)" : "var(--text-muted)",
                   fontWeight: 600, minWidth: 16, textAlign: "right",
                 }}>
                   {count}
@@ -156,7 +156,7 @@ export default function DurationSidebar() {
               borderRadius: 8,
               border: "none",
               background: "transparent",
-              color: "var(--emerald)",
+              color: "var(--accent)",
               cursor: "pointer",
               fontSize: 13,
               fontWeight: 500,
@@ -164,7 +164,7 @@ export default function DurationSidebar() {
               textAlign: "left",
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.background = "var(--emerald-bg)";
+              (e.currentTarget as HTMLElement).style.background = "var(--accent-bg)";
             }}
             onMouseLeave={e => {
               (e.currentTarget as HTMLElement).style.background = "transparent";

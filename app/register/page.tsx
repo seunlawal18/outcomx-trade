@@ -108,13 +108,13 @@ export default function RegisterPage() {
         <div style={{ display: "flex", alignItems: "center", marginBottom: 24 }}>
           {[1, 2].map((s) => (
             <div key={s} style={{ display: "flex", alignItems: "center", flex: 1 }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", flexShrink: 0, background: step >= s ? "var(--emerald)" : "var(--bg-card-hover)", border: `2px solid ${step >= s ? "var(--emerald)" : "var(--border)"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: step >= s ? "#fff" : "var(--text-muted)", transition: "all 0.3s" }}>
+              <div style={{ width: 28, height: 28, borderRadius: "50%", flexShrink: 0, background: step >= s ? "var(--accent)" : "var(--bg-card-hover)", border: `2px solid ${step >= s ? "var(--accent)" : "var(--border)"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: step >= s ? "#fff" : "var(--text-muted)", transition: "all 0.3s" }}>
                 {step > s ? <CheckCircle2 size={14} /> : s}
               </div>
-              <span style={{ fontSize: 12, color: step >= s ? "var(--emerald)" : "var(--text-muted)", marginLeft: 8, fontWeight: step >= s ? 600 : 400 }}>
+              <span style={{ fontSize: 12, color: step >= s ? "var(--accent)" : "var(--text-muted)", marginLeft: 8, fontWeight: step >= s ? 600 : 400 }}>
                 {s === 1 ? "Your Info" : "Security"}
               </span>
-              {s < 2 && <div style={{ flex: 1, height: 2, background: step > s ? "var(--emerald)" : "var(--border)", margin: "0 12px", transition: "background 0.3s" }} />}
+              {s < 2 && <div style={{ flex: 1, height: 2, background: step > s ? "var(--accent)" : "var(--border)", margin: "0 12px", transition: "background 0.3s" }} />}
             </div>
           ))}
         </div>
@@ -158,9 +158,9 @@ export default function RegisterPage() {
                       <button key={value} type="button" onClick={() => setRegion(value)} style={{
                         padding: "10px 8px", borderRadius: 10, fontSize: 13, fontWeight: 500,
                         cursor: "pointer", border: "1px solid",
-                        borderColor: isSelected ? "var(--emerald)" : "var(--border)",
-                        background: isSelected ? "var(--emerald-bg)" : "var(--bg-card-hover)",
-                        color: isSelected ? "var(--emerald)" : "var(--text-secondary)",
+                        borderColor: isSelected ? "var(--accent)" : "var(--border)",
+                        background: isSelected ? "var(--accent-bg)" : "var(--bg-card-hover)",
+                        color: isSelected ? "var(--accent)" : "var(--text-secondary)",
                         display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
                         transition: "all 0.15s",
                       }}>
@@ -243,10 +243,10 @@ export default function RegisterPage() {
               )}
 
               {/* Funding note */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10, background: "var(--emerald-bg)", border: "1px solid var(--emerald-border)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10, background: "var(--accent-bg)", border: "1px solid var(--accent-border)" }}>
                 <span style={{ fontSize: 22 }}>{regionFlag}</span>
                 <div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: "var(--emerald)", margin: 0 }}>You&apos;re almost in.</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "var(--accent)", margin: 0 }}>You&apos;re almost in.</p>
                   <p style={{ fontSize: 12, color: "var(--text-secondary)", margin: 0 }}>
                     Deposit funds after signup to take your first position.
                   </p>
@@ -262,7 +262,7 @@ export default function RegisterPage() {
 
         <p style={{ textAlign: "center", marginTop: 20, fontSize: 14, color: "var(--text-secondary)" }}>
           Already have an account?{" "}
-          <Link href="/login" style={{ color: "var(--emerald)", fontWeight: 600, textDecoration: "none" }}>Sign in</Link>
+          <Link href="/login" style={{ color: "var(--accent)", fontWeight: 600, textDecoration: "none" }}>Sign in</Link>
         </p>
       </div>
     </div>
