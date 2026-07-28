@@ -209,7 +209,12 @@ export default function NewsSlideshow() {
     };
 
     fetchSlides();
-    return () => { cancelled = true; };
+
+    // Poll every 30s — admin changes reflect without page refresh
+    const pollInterval = setInterval(() => {
+      if (!cancelled) fetchSlides(true);
+    }, 30_000);
+    return () => { cancelled = true; clearInterval(pollInterval); };
   }, []);
 
   // Auto-advance + progress bar
