@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { X, ChevronLeft, ChevronRight, Zap, TrendingUp, Globe, Star } from "lucide-react";
-import { apiGetFeaturedMarkets, ApiMarket } from "@/lib/api";
+import { apiGetHeroSlides, ApiMarket } from "@/lib/api";
 
 interface Slide {
   id: number;
@@ -16,6 +16,33 @@ interface Slide {
   icon: React.ReactNode;
   accent: string;
   heroBanner?: string | null; // full-bleed background image from admin
+}
+
+// ── Convert a promo/ad slide → Slide ────────────────────────────
+function promoToSlide(p: {
+  id: number;
+  title: string;
+  subtitle: string | null;
+  tag: string | null;
+  ctaLabel: string | null;
+  ctaHref: string | null;
+  bannerImage: string | null;
+  accentColor: string;
+  gradient: string | null;
+}): Slide {
+  return {
+    id: p.id,
+    tag: p.tag || "",
+    tagColor: p.accentColor || "#6c63ff",
+    headline: p.title,
+    sub: p.subtitle || "",
+    cta: p.ctaLabel || "Explore Markets",
+    href: p.ctaHref || "/",
+    gradient: p.gradient || "linear-gradient(135deg, #0d1b3e 0%, #0a2a5e 50%, #0d1b3e 100%)",
+    icon: null,
+    accent: p.accentColor || "#6c63ff",
+    heroBanner: p.bannerImage || null,
+  };
 }
 
 // ── Convert a live ApiMarket → Slide ─────────────────────────────
@@ -145,11 +172,15 @@ export default function NewsSlideshow() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Fetch featured markets first — only fall back to static slides if empty/failed
+  // Fetch all hero slides (promo + featured markets) from /api/slides
   useEffect(() => {
-    apiGetFeaturedMarkets().then(res => {
+    apiGetHeroSlides().then(res => {
       if (res.ok && res.data && res.data.length > 0) {
-        setSlides(res.data.map(marketToSlide));
+        const converted = res.data.map(item => {
+          if (item.type === "promo") return promoToSlide(item);
+          return marketToSlide(item as ApiMarket & { type: "market" });
+        });
+        setSlides(converted);
       } else {
         setSlides(FALLBACK_SLIDES);
       }

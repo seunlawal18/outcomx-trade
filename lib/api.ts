@@ -283,9 +283,29 @@ export async function apiGetMarketTrades(id: number) {
   return apiFetch<ApiMarketTrade[]>(`/api/markets/${id}/trades`);
 }
 
-// ── Featured markets (hero slideshow) ────────────────────────────
-// Returns up to 5 markets marked featured=true, ordered by featured_order.
-// Used by NewsSlideshow to replace hardcoded slides with live market data.
+// ── Fetch all hero slides (promo + featured markets merged) ──────
+export async function apiGetHeroSlides() {
+  return apiFetch<Array<
+    // Promo/ad slide (no market)
+    | {
+        type: "promo";
+        id: number;
+        title: string;
+        subtitle: string | null;
+        tag: string | null;
+        ctaLabel: string | null;
+        ctaHref: string | null;
+        bannerImage: string | null;
+        accentColor: string;
+        gradient: string | null;
+        slideOrder: number;
+      }
+    // Featured market slide
+    | (ApiMarket & { type: "market"; slideOrder?: number })
+  >>("/api/slides");
+}
+
+// ── Featured markets (legacy — kept for backwards compat) ────────
 export async function apiGetFeaturedMarkets() {
   return apiFetch<ApiMarket[]>("/api/markets/featured");
 }
