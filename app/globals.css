@@ -13,10 +13,19 @@
   --text-primary:  #f0f2f5;
   --text-secondary:#8b8fa8;
   --text-muted:    #4a4d5a;
+
+  /* Brand accent — blue/purple (CTAs, active states, sign up) */
+  --accent:        #6c63ff;
+  --accent-dark:   #5a52e8;
+  --accent-bg:     rgba(108,99,255,0.12);
+  --accent-border: rgba(108,99,255,0.35);
+
+  /* Emerald — reserved for profit/win/positive outcomes only */
   --emerald:       #10b981;
   --emerald-dark:  #059669;
   --emerald-bg:    rgba(16,185,129,0.12);
   --emerald-border:rgba(16,185,129,0.35);
+
   --red:           #ef4444;
   --red-dark:      #dc2626;
   --red-bg:        rgba(239,68,68,0.12);
@@ -38,7 +47,7 @@
   --footer-btn-bg:      rgba(255,255,255,0.08);
   --footer-btn-border:  rgba(255,255,255,0.18);
   --footer-btn-hover:   rgba(255,255,255,0.18);
-  --footer-accent:      #10b981;
+  --footer-accent:      #6c63ff;
   --footer-divider:     rgba(255,255,255,0.07);
 }
 
@@ -54,6 +63,13 @@
   --text-primary:  #0f172a;
   --text-secondary:#64748b;
   --text-muted:    #94a3b8;
+
+  /* Brand accent — blue/purple */
+  --accent:        #5a52e8;
+  --accent-dark:   #4840d6;
+  --accent-bg:     rgba(90,82,232,0.08);
+  --accent-border: rgba(90,82,232,0.3);
+
   --emerald:       #059669;
   --emerald-dark:  #047857;
   --emerald-bg:    rgba(5,150,105,0.08);
@@ -65,7 +81,7 @@
   --scrollbar-bg:  #cbd5e1;
   --shadow:        0 4px 24px rgba(0,0,0,0.08);
 
-  /* Footer — light mode: warm white with dark text */
+  /* Footer — light mode */
   --footer-bg:          #f8fafc;
   --footer-bottom:      #f1f5f9;
   --footer-border:      #e2e8f0;
@@ -79,7 +95,7 @@
   --footer-btn-bg:      #e2e8f0;
   --footer-btn-border:  #cbd5e1;
   --footer-btn-hover:   #cbd5e1;
-  --footer-accent:      #059669;
+  --footer-accent:      #5a52e8;
   --footer-divider:     #e2e8f0;
 }
 
@@ -117,8 +133,8 @@ body {
 }
 
 /* ─── BUTTONS ───────────────────────────────────────────────────── */
-.btn-emerald {
-  background: var(--emerald);
+.btn-primary {
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -127,7 +143,21 @@ body {
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
 }
-.btn-emerald:hover { background: var(--emerald-dark); transform: translateY(-1px); }
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Keep btn-emerald for win/profit contexts only */
+.btn-emerald {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-emerald:hover { background: var(--accent-dark); transform: translateY(-1px); }
 .btn-emerald:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* ─── BADGES ────────────────────────────────────────────────────── */
@@ -166,9 +196,9 @@ body {
   border-color: var(--border);
 }
 .category-pill.active {
-  background: var(--emerald-bg);
-  color: var(--emerald);
-  border-color: var(--emerald-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-color: var(--accent-border);
 }
 
 /* ─── INPUT ─────────────────────────────────────────────────────── */
@@ -183,7 +213,7 @@ body {
   transition: border-color 0.2s, background 0.2s;
   font-size: 14px;
 }
-.input-dark:focus { border-color: var(--emerald); }
+.input-dark:focus { border-color: var(--accent); }
 
 /* ─── FOCUS RING (keyboard navigation) ─────────────────────────── */
 /* Only shows for keyboard focus (:focus-visible), never on mouse click,
@@ -194,7 +224,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--emerald);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -217,7 +247,7 @@ select:focus-visible,
   background: transparent;
 }
 .sidebar-link:hover { background: var(--bg-card-hover); color: var(--text-primary); }
-.sidebar-link.active { background: var(--emerald-bg); color: var(--emerald); }
+.sidebar-link.active { background: var(--accent-bg); color: var(--accent); }
 
 /* ─── LIVE DOT ──────────────────────────────────────────────────── */
 @keyframes pulse-green {
@@ -287,7 +317,7 @@ select:focus-visible,
   transition: background 0.25s;
   flex-shrink: 0;
 }
-.theme-toggle[data-on="true"]  { background: var(--emerald); }
+.theme-toggle[data-on="true"]  { background: var(--accent); }
 .theme-toggle[data-on="false"] { background: var(--border); }
 .theme-toggle::after {
   content: "";

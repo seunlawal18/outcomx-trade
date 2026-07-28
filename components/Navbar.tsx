@@ -590,7 +590,7 @@ export default function Navbar() {
                 <Link href="/login" className="hide-mobile" style={{ padding: "7px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, background: iconBg, border: `1px solid ${iconBorder}`, color: textPrimary, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
                   <LogIn size={14} /> Log In
                 </Link>
-                <Link href="/register" className="hide-mobile" style={{ padding: "7px 16px", borderRadius: 8, fontSize: 14, fontWeight: 700, background: "var(--emerald)", color: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
+                <Link href="/register" className="hide-mobile" style={{ padding: "7px 16px", borderRadius: 8, fontSize: 14, fontWeight: 700, background: "var(--accent)", color: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
                   <UserPlus size={14} /> Sign Up
                 </Link>
                 {/* Mobile: just avatar icon → goes to login */}
