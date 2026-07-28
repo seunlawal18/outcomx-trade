@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { X, ChevronLeft, ChevronRight, Zap, TrendingUp, Globe, Star } from "lucide-react";
+import { apiGetFeaturedMarkets, ApiMarket } from "@/lib/api";
 
 interface Slide {
   id: number;
@@ -16,9 +17,47 @@ interface Slide {
   accent: string;
 }
 
-const slides: Slide[] = [
+// ── Convert a live ApiMarket → Slide ─────────────────────────────
+function marketToSlide(m: ApiMarket): Slide {
+  const gradients: Record<string, string> = {
+    sports:        "linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #1a0533 100%)",
+    crypto:        "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+    politics:      "linear-gradient(135deg, #1a0a0a 0%, #3d1515 50%, #1a0a0a 100%)",
+    economy:       "linear-gradient(135deg, #0d1f0d 0%, #0a3d1a 50%, #0d1f0d 100%)",
+    finance:       "linear-gradient(135deg, #0d1b3e 0%, #0a2a5e 50%, #0d1b3e 100%)",
+    entertainment: "linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #1a0533 100%)",
+    esports:       "linear-gradient(135deg, #0f0f2d 0%, #1a1a5e 50%, #0f0f2d 100%)",
+  };
+  const accents: Record<string, string> = {
+    sports: "#6366f1", crypto: "#10b981", politics: "#ef4444",
+    economy: "#10b981", finance: "#3b82f6", entertainment: "#f59e0b", esports: "#8b5cf6",
+  };
+  const tags: Record<string, string> = {
+    sports: "⚽ SPORTS", crypto: "₿ CRYPTO", politics: "🏛️ POLITICS",
+    economy: "📈 ECONOMY", finance: "💰 FINANCE", entertainment: "🎬 ENTERTAINMENT", esports: "🎮 ESPORTS",
+  };
+  const cat = m.category.toLowerCase();
+  const firstOpt = m.options[0];
+  const prob = m.probabilities[firstOpt] ?? 50;
+
+  return {
+    id: m.id,
+    tag: tags[cat] ?? "🔥 LIVE",
+    tagColor: accents[cat] ?? "#10b981",
+    headline: m.title,
+    sub: `${firstOpt} is currently at ${prob}% probability. ${m.volume > 0 ? `$${(m.volume / 1000).toFixed(0)}K traded.` : ""}`.trim(),
+    cta: "Take a Position",
+    href: `/market/${m.id}`,
+    gradient: gradients[cat] ?? "linear-gradient(135deg, #0d1b3e 0%, #0a2a5e 50%, #0d1b3e 100%)",
+    icon: <TrendingUp size={80} style={{ opacity: 0.1, position: "absolute", right: 40, top: "50%", transform: "translateY(-50%)" }} />,
+    accent: accents[cat] ?? "#10b981",
+  };
+}
+
+// ── Hardcoded fallback slides (shown when no featured markets exist) ──
+const FALLBACK_SLIDES: Slide[] = [
   {
-    id: 1,
+    id: 0,
     tag: "🌍 AFRICA-FIRST",
     tagColor: "#10b981",
     headline: "Trade What Happens Next.",
@@ -30,7 +69,7 @@ const slides: Slide[] = [
     accent: "#3b82f6",
   },
   {
-    id: 2,
+    id: 0,
     tag: "⚡ LIVE NOW",
     tagColor: "#10b981",
     headline: "Crypto & Finance Markets",
@@ -42,7 +81,7 @@ const slides: Slide[] = [
     accent: "#10b981",
   },
   {
-    id: 3,
+    id: 0,
     tag: "📈 TRENDING",
     tagColor: "#6366f1",
     headline: "Sports & Esports Markets",
@@ -54,7 +93,7 @@ const slides: Slide[] = [
     accent: "#6366f1",
   },
   {
-    id: 4,
+    id: 0,
     tag: "🏛️ POLITICS",
     tagColor: "#ef4444",
     headline: "Political & Economic Markets",
@@ -66,7 +105,7 @@ const slides: Slide[] = [
     accent: "#ef4444",
   },
   {
-    id: 5,
+    id: 0,
     tag: "🌟 GET STARTED",
     tagColor: "#f59e0b",
     headline: "New to Prediction Markets?",
@@ -82,6 +121,7 @@ const slides: Slide[] = [
 const AUTO_ADVANCE_MS = 5000;
 
 export default function NewsSlideshow() {
+  const [slides, setSlides] = useState<Slide[]>(FALLBACK_SLIDES);
   const [visible, setVisible] = useState(true);
   const [dismissed, setDismissed] = useState(false);
   const [current, setCurrent] = useState(0);
@@ -90,6 +130,17 @@ export default function NewsSlideshow() {
   const router = useRouter();
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Fetch featured markets from backend — replace fallback slides if any exist
+  useEffect(() => {
+    apiGetFeaturedMarkets().then(res => {
+      if (res.ok && res.data && res.data.length > 0) {
+        setSlides(res.data.map(marketToSlide));
+        setCurrent(0); // reset to first slide
+      }
+      // If fetch fails or returns empty — keep FALLBACK_SLIDES
+    });
+  }, []);
 
   // Auto-advance + progress bar
   useEffect(() => {

@@ -282,3 +282,10 @@ export interface ApiMarketTrade {
 export async function apiGetMarketTrades(id: number) {
   return apiFetch<ApiMarketTrade[]>(`/api/markets/${id}/trades`);
 }
+
+// ── Featured markets (hero slideshow) ────────────────────────────
+// Returns up to 5 markets marked featured=true, ordered by featured_order.
+// Used by NewsSlideshow to replace hardcoded slides with live market data.
+export async function apiGetFeaturedMarkets() {
+  return apiFetch<ApiMarket[]>("/api/markets/featured");
+}
