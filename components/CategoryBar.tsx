@@ -9,7 +9,7 @@ const categories: { id: MarketCategory; label: string; badge?: string }[] = [
   { id: "all",           label: "All" },
   { id: "new",           label: "New", badge: "NEW" },
   { id: "closing",       label: "Closing Soon" },
-  { id: "africa",        label: "Africa 🌍" },
+  { id: "africa",        label: "International 🌐" },
   { id: "sports",        label: "Sports" },
   { id: "crypto",        label: "Crypto" },
   { id: "politics",      label: "Politics" },

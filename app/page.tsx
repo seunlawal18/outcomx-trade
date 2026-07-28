@@ -84,7 +84,7 @@ export default function HomePage() {
     ? `Results for "${searchQuery}"`
     : activeCategory === "new"     ? "New Markets"
     : activeCategory === "closing" ? "Closing Soon"
-    : activeCategory === "africa"  ? "🌍 Africa Markets"
+    : activeCategory === "africa"  ? "🌐 International Markets"
     : activeCategory !== "all"     ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)
     : activeDuration !== "all"     ? `${activeDuration.toUpperCase()} Markets`
     : "All Markets";

@@ -176,7 +176,7 @@ export default function NewsSlideshow() {
       if (timerRef.current) clearInterval(timerRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
     };
-  }, [visible, paused, current]);
+  }, [visible, paused, current, slides]);
 
   const goTo = (i: number) => { setCurrent(i); setProgress(0); };
   const prev = () => { if (!slides) return; goTo((current - 1 + slides.length) % slides.length); };
