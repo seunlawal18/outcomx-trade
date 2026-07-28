@@ -225,8 +225,8 @@ export default function NewsSlideshow() {
         key={slide.id}
         style={{
           background: slide.heroBanner ? "transparent" : slide.gradient,
-          padding: "clamp(14px, 3vw, 40px) clamp(16px, 5vw, 60px)",
-          minHeight: "clamp(120px, 18vw, 200px)",
+          padding: "clamp(12px, 2.5vw, 36px) clamp(14px, 4vw, 56px)",
+          minHeight: "clamp(140px, 22vw, 220px)",
           display: "flex",
           alignItems: "center",
           position: "relative",
@@ -285,16 +285,17 @@ export default function NewsSlideshow() {
 
         {/* Content — only render if any text field is present */}
         {(slide.tag || slide.headline || slide.sub) && (
-          <div style={{ position: "relative", zIndex: 2, maxWidth: 700 }}>
+          <div style={{ position: "relative", zIndex: 2, maxWidth: 600 }}>
             {/* Tag */}
             {slide.tag && (
               <span style={{
                 display: "inline-block",
-                fontSize: "clamp(10px, 1.5vw, 12px)",
+                fontSize: 11,
                 fontWeight: 700,
                 color: slide.tagColor,
-                marginBottom: 8,
-                letterSpacing: "0.5px",
+                marginBottom: 6,
+                letterSpacing: "1px",
+                textTransform: "uppercase",
               }}>
                 {slide.tag}
               </span>
@@ -302,52 +303,56 @@ export default function NewsSlideshow() {
 
             {/* Headline */}
             {slide.headline && (
-              <h2 style={{
-                fontSize: "clamp(18px, 3.5vw, 32px)",
-                fontWeight: 900,
-                color: "#ffffff",
-                margin: slide.sub ? "0 0 8px" : "0 0 12px",
-                lineHeight: 1.2,
-                letterSpacing: "-0.5px",
-              }}>
+              <h2
+                className="slideshow-headline"
+                style={{
+                  fontSize: "clamp(15px, 3vw, 30px)",
+                  fontWeight: 800,
+                  color: "#ffffff",
+                  margin: "0 0 6px",
+                  lineHeight: 1.25,
+                  letterSpacing: "-0.3px",
+                }}
+              >
                 {slide.headline}
               </h2>
             )}
 
-            {/* Subheadline */}
+            {/* Subheadline — hidden on mobile */}
             {slide.sub && (
               <p
                 className="slideshow-sub"
                 style={{
-                  fontSize: "clamp(11px, 1.8vw, 14px)",
-                  color: "rgba(255,255,255,0.75)",
-                  margin: "0 0 14px",
-                  lineHeight: 1.5,
-                  maxWidth: 500,
+                  fontSize: 13,
+                  color: "rgba(255,255,255,0.72)",
+                  margin: "0 0 12px",
+                  lineHeight: 1.45,
+                  maxWidth: 440,
                 }}
               >
                 {slide.sub}
               </p>
             )}
 
-            {/* CTA button — always shown */}
+            {/* CTA button */}
             <button
               onClick={(e) => { e.stopPropagation(); router.push(slide.href); }}
               style={{
-                padding: "clamp(8px, 1.5vw, 10px) clamp(16px, 3vw, 24px)",
+                padding: "9px 22px",
                 borderRadius: 24,
                 background: slide.accent,
                 border: "none",
                 color: "#fff",
-                fontSize: "clamp(12px, 1.5vw, 14px)",
+                fontSize: 13,
                 fontWeight: 700,
                 cursor: "pointer",
                 letterSpacing: "0.5px",
                 textTransform: "uppercase",
                 transition: "opacity 0.2s, transform 0.2s",
+                whiteSpace: "nowrap",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             >
               Take a Position →
             </button>
@@ -449,8 +454,9 @@ export default function NewsSlideshow() {
       </div>
 
       <style>{`
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
           .slideshow-sub { display: none !important; }
+          .slideshow-headline { font-size: 15px !important; margin-bottom: 8px !important; }
         }
       `}</style>
     </div>
