@@ -1,47 +1,83 @@
 // ── OutcomX brand logo ─────────────────────────────────────────────
-// Vector recreation of the brand mark (blue scalloped ring) — the mark
-// doubles as the "o" in the wordmark, matching the brand banner.
-// Path geometry is generated (9-lobe cosine-modulated ring, r=82±9,
-// hole r=46 on a 200×200 viewBox); regenerate rather than hand-edit.
+// Wordmark: "outcom" in text + gradient X mark matching the icon
 
-export const BRAND_BLUE = "#10b981";
-
-const MARK_PATH =
-  "M191.0 100.0L189.9 104.7L186.8 109.1L182.4 113.0L177.5 116.5L173.1 119.6L169.8 122.7L168.3 126.2L168.3 130.4L169.4 135.4L171.0 141.0L172.2 146.9L172.2 152.5L170.6 157.2L167.3 160.6L162.5 162.5L156.7 163.0L150.7 162.6L145.1 162.1L140.3 162.0L136.5 163.2L133.6 165.9L131.2 170.1L128.9 175.2L126.2 180.6L122.9 185.4L118.8 188.6L114.2 189.8L109.3 188.8L104.5 186.0L100.0 182.0L95.9 177.8L92.2 174.3L88.6 172.2L84.7 171.8L80.4 173.1L75.5 175.3L70.1 177.9L64.5 179.7L59.1 180.2L54.5 178.8L51.0 175.5L48.7 170.6L47.5 164.8L47.0 158.9L46.5 153.5L45.4 149.1L43.2 146.0L39.6 143.9L34.7 142.4L29.0 141.0L23.3 139.1L18.4 136.3L15.1 132.6L13.9 128.0L14.6 122.9L17.1 117.6L20.4 112.6L23.7 108.0L26.1 103.9L27.0 100.0L26.1 96.1L23.7 92.0L20.4 87.4L17.1 82.4L14.6 77.1L13.9 72.0L15.1 67.4L18.4 63.7L23.3 60.9L29.0 59.0L34.7 57.6L39.6 56.1L43.2 54.0L45.4 50.9L46.5 46.5L47.0 41.1L47.5 35.2L48.7 29.4L51.0 24.5L54.5 21.2L59.1 19.8L64.5 20.3L70.1 22.1L75.5 24.7L80.4 26.9L84.7 28.2L88.6 27.8L92.2 25.7L95.9 22.2L100.0 18.0L104.5 14.0L109.3 11.2L114.2 10.2L118.8 11.4L122.9 14.6L126.2 19.4L128.9 24.8L131.2 29.9L133.6 34.1L136.5 36.8L140.3 38.0L145.1 37.9L150.7 37.4L156.7 37.0L162.5 37.5L167.3 39.4L170.6 42.8L172.2 47.5L172.2 53.1L171.0 59.0L169.4 64.6L168.3 69.6L168.3 73.8L169.8 77.3L173.1 80.4L177.5 83.5L182.4 87.0L186.8 90.9L189.9 95.3L191.0 100.0ZM146 100A46 46 0 1 0 54 100A46 46 0 1 0 146 100Z";
-
-/** The scalloped-ring mark alone (favicon, avatars, loading states). */
-export function LogoMark({ size = 28, color = BRAND_BLUE }: { size?: number; color?: string }) {
+/** The X mark as inline SVG — gradient blue/purple with centre glow */
+export function LogoMark({ size = 28 }: { size?: number }) {
+  const id = `lm${size}`;
   return (
-    <svg width={size} height={size} viewBox="0 0 200 200" aria-hidden="true" style={{ flexShrink: 0, display: "block" }}>
-      <path fill={color} fillRule="evenodd" d={MARK_PATH} />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+      style={{ flexShrink: 0, display: "block" }}
+    >
+      <defs>
+        <radialGradient id={`${id}bg`} cx="50%" cy="50%" r="55%">
+          <stop offset="0%" stopColor="#0d2040"/>
+          <stop offset="100%" stopColor="#000000"/>
+        </radialGradient>
+        <linearGradient id={`${id}lg`} x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stopColor="#6B3FD4"/>
+          <stop offset="100%" stopColor="#2B6FE0"/>
+        </linearGradient>
+        <linearGradient id={`${id}rg`} x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stopColor="#2B6FE0"/>
+          <stop offset="100%" stopColor="#6B3FD4"/>
+        </linearGradient>
+        <radialGradient id={`${id}cg`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="1"/>
+          <stop offset="35%" stopColor="#7ac8ff" stopOpacity="0.7"/>
+          <stop offset="100%" stopColor="#2B6FE0" stopOpacity="0"/>
+        </radialGradient>
+        <radialGradient id={`${id}ray`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#4fa8ff" stopOpacity="0.5"/>
+          <stop offset="100%" stopColor="#000510" stopOpacity="0"/>
+        </radialGradient>
+      </defs>
+
+      {/* Background */}
+      <rect width="100" height="100" fill="#000000"/>
+      <circle cx="50" cy="50" r="46" fill={`url(#${id}bg)`}/>
+      <circle cx="50" cy="50" r="36" fill={`url(#${id}ray)`}/>
+
+      {/* X arms */}
+      <polygon points="12,8 50,50 35,50 8,12"  fill={`url(#${id}lg)`} opacity="0.95"/>
+      <polygon points="88,8 65,50 50,50 92,12"  fill={`url(#${id}rg)`} opacity="0.95"/>
+      <polygon points="8,88 50,50 35,50 12,92"  fill={`url(#${id}lg)`} opacity="0.95"/>
+      <polygon points="92,88 65,50 50,50 88,92"  fill={`url(#${id}rg)`} opacity="0.95"/>
+
+      {/* Centre glow */}
+      <circle cx="50" cy="50" r="14" fill={`url(#${id}cg)`} opacity="0.9"/>
+      <circle cx="50" cy="50" r="2.5" fill="#ffffff"/>
     </svg>
   );
 }
 
-/** Full lockup — the mark acts as the "o" in "outcomx". */
+/** Full wordmark — "outcom" + gradient X mark */
 export default function Logo({
   size = 28,
   textColor,
 }: {
   size?: number;
-  /** Wordmark color — defaults to the theme's primary text color */
   textColor?: string;
 }) {
+  const fontSize = Math.round(size * 0.9);
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: Math.round(size * 0.06) }}>
-      <LogoMark size={size} />
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 1 }}>
       <span
         style={{
-          fontSize: Math.round(size * 0.82),
-          fontWeight: 800,
+          fontSize,
+          fontWeight: 700,
           letterSpacing: "-0.02em",
           lineHeight: 1,
           color: textColor ?? "var(--text-primary)",
-          transform: `translateY(${Math.round(size * 0.02)}px)`,
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         }}
       >
-        utcomx
+        outcom
       </span>
+      <LogoMark size={Math.round(size * 1.05)} />
     </span>
   );
 }
