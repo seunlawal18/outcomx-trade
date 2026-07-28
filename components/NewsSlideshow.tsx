@@ -279,8 +279,9 @@ export default function NewsSlideshow() {
             )}
             {slide.cta && (
               <button
+                className="slideshow-cta"
                 onClick={e => { e.stopPropagation(); router.push(slide.href); }}
-                style={{ padding: "9px 22px", borderRadius: 24, background: slide.accent, border: "none", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", letterSpacing: "0.5px", textTransform: "uppercase", transition: "opacity 0.2s", whiteSpace: "nowrap" }}
+                style={{ padding: "7px 16px", borderRadius: 20, background: slide.accent, border: "none", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", letterSpacing: "0.5px", textTransform: "uppercase", transition: "opacity 0.2s", whiteSpace: "nowrap" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
               >
@@ -294,8 +295,9 @@ export default function NewsSlideshow() {
         {!hasText && slide.cta && (
           <div style={{ position: "relative", zIndex: 2, marginTop: "auto", alignSelf: "flex-end" }}>
             <button
+              className="slideshow-cta"
               onClick={e => { e.stopPropagation(); router.push(slide.href); }}
-              style={{ padding: "10px 24px", borderRadius: 24, background: slide.accent, border: "none", color: "#fff", fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: "0.5px", textTransform: "uppercase", transition: "opacity 0.2s" }}
+              style={{ padding: "7px 16px", borderRadius: 20, background: slide.accent, border: "none", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", letterSpacing: "0.5px", textTransform: "uppercase", transition: "opacity 0.2s" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             >
@@ -328,7 +330,8 @@ export default function NewsSlideshow() {
       <style>{`
         @media (max-width: 600px) {
           .slideshow-sub { display: none !important; }
-          .slideshow-headline { font-size: 15px !important; margin-bottom: 8px !important; }
+          .slideshow-headline { font-size: 15px !important; margin-bottom: 6px !important; }
+          .slideshow-cta { padding: 5px 12px !important; font-size: 11px !important; }
         }
       `}</style>
     </div>
