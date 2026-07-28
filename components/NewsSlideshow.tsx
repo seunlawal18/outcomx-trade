@@ -130,7 +130,7 @@ const FALLBACK_SLIDES: Slide[] = [
 const AUTO_ADVANCE_MS = 5000;
 
 export default function NewsSlideshow() {
-  const [slides, setSlides] = useState<Slide[]>(FALLBACK_SLIDES);
+  const [slides, setSlides] = useState<Slide[] | null>(null); // null = loading
   const [visible, setVisible] = useState(true);
   const [dismissed, setDismissed] = useState(false);
   const [current, setCurrent] = useState(0);
@@ -140,20 +140,23 @@ export default function NewsSlideshow() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Fetch featured markets from backend — replace fallback slides if any exist
+  // Fetch featured markets first — only fall back to static slides if empty/failed
   useEffect(() => {
     apiGetFeaturedMarkets().then(res => {
       if (res.ok && res.data && res.data.length > 0) {
         setSlides(res.data.map(marketToSlide));
-        setCurrent(0); // reset to first slide
+      } else {
+        setSlides(FALLBACK_SLIDES);
       }
-      // If fetch fails or returns empty — keep FALLBACK_SLIDES
+      setCurrent(0);
+    }).catch(() => {
+      setSlides(FALLBACK_SLIDES);
     });
   }, []);
 
   // Auto-advance + progress bar
   useEffect(() => {
-    if (!visible || paused) {
+    if (!visible || paused || !slides) {
       if (timerRef.current) clearInterval(timerRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
       return;
@@ -169,19 +172,15 @@ export default function NewsSlideshow() {
       setCurrent((c) => (c + 1) % slides.length);
       setProgress(0);
     }, AUTO_ADVANCE_MS);
-
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
     };
   }, [visible, paused, current]);
 
-  const goTo = (i: number) => {
-    setCurrent(i);
-    setProgress(0);
-  };
-  const prev = () => goTo((current - 1 + slides.length) % slides.length);
-  const next = () => goTo((current + 1) % slides.length);
+  const goTo = (i: number) => { setCurrent(i); setProgress(0); };
+  const prev = () => { if (!slides) return; goTo((current - 1 + slides.length) % slides.length); };
+  const next = () => { if (!slides) return; goTo((current + 1) % slides.length); };
 
   const dismiss = () => {
     setVisible(false);
@@ -189,6 +188,7 @@ export default function NewsSlideshow() {
   };
 
   if (!visible) return null;
+  if (!slides) return null; // still loading — show nothing, no flash
 
   const slide = slides[current];
 
