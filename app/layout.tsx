@@ -12,10 +12,13 @@ export const metadata: Metadata = {
   title: "OUTCOMX — Trade What Happens Next",
   description: "Africa-first prediction markets. Research real-world events, take a position on what you think will happen, and profit when you're right.",
   icons: {
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
     shortcut: "/icon.svg",
     apple: "/icon.svg",
   },
+  themeColor: "#0d0f14",
 };
 
 export const viewport: Viewport = {

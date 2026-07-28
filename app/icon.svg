@@ -1,58 +1,81 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
   <defs>
-    <!-- Background radial glow -->
-    <radialGradient id="bgGlow" cx="50%" cy="50%" r="55%">
-      <stop offset="0%" stop-color="#0d2040"/>
-      <stop offset="100%" stop-color="#000000"/>
+    <!-- Dark navy background gradient -->
+    <radialGradient id="bgr" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#0e1a3a"/>
+      <stop offset="100%" stop-color="#040810"/>
     </radialGradient>
-    <!-- Left arm gradient (purple → blue) -->
-    <linearGradient id="leftGrad" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stop-color="#6B3FD4"/>
-      <stop offset="100%" stop-color="#2B6FE0"/>
+    <!-- Top-left arm: cyan/blue -->
+    <linearGradient id="tl" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4fc3f7" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#1565c0" stop-opacity="0.7"/>
     </linearGradient>
-    <!-- Right arm gradient (blue → purple) -->
-    <linearGradient id="rightGrad" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stop-color="#2B6FE0"/>
-      <stop offset="100%" stop-color="#6B3FD4"/>
+    <!-- Top-right arm: blue/purple -->
+    <linearGradient id="tr" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5c6bc0" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#1a237e" stop-opacity="0.7"/>
     </linearGradient>
-    <!-- Centre glow -->
-    <radialGradient id="centreGlow" cx="50%" cy="50%" r="50%">
+    <!-- Bottom-left arm: purple -->
+    <linearGradient id="bl" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c4dff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#1a237e" stop-opacity="0.6"/>
+    </linearGradient>
+    <!-- Bottom-right arm: blue/cyan -->
+    <linearGradient id="br" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#29b6f6" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0d47a1" stop-opacity="0.6"/>
+    </linearGradient>
+    <!-- Centre explosion glow -->
+    <radialGradient id="cg" cx="50%" cy="50%" r="30%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-      <stop offset="30%" stop-color="#7ac8ff" stop-opacity="0.8"/>
-      <stop offset="100%" stop-color="#2B6FE0" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#90caf9" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#1565c0" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#040810" stop-opacity="0"/>
     </radialGradient>
-    <!-- Ray burst -->
-    <radialGradient id="rayGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#4fa8ff" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#000510" stop-opacity="0"/>
+    <!-- Outer ambient glow -->
+    <radialGradient id="ag" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1565c0" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#040810" stop-opacity="0"/>
     </radialGradient>
+    <filter id="blur1">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <filter id="blur2">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
   </defs>
 
-  <!-- Black background -->
-  <rect width="200" height="200" fill="#000000"/>
+  <!-- Rounded square background -->
+  <rect width="1024" height="1024" rx="200" ry="200" fill="url(#bgr)"/>
 
-  <!-- Background radial glow -->
-  <ellipse cx="100" cy="100" rx="90" ry="90" fill="url(#bgGlow)"/>
+  <!-- Ambient outer glow -->
+  <ellipse cx="512" cy="512" rx="400" ry="400" fill="url(#ag)"/>
 
-  <!-- Ray burst behind the X -->
-  <ellipse cx="100" cy="100" rx="70" ry="70" fill="url(#rayGlow)"/>
+  <!-- X arms — blurred glow layer behind -->
+  <g filter="url(#blur1)" opacity="0.6">
+    <polygon points="120,80 512,512 420,512 80,120" fill="#3b82f6"/>
+    <polygon points="904,80 604,512 512,512 944,120" fill="#6366f1"/>
+    <polygon points="80,904 512,512 420,512 120,944" fill="#8b5cf6"/>
+    <polygon points="944,904 604,512 512,512 904,944" fill="#3b82f6"/>
+  </g>
 
-  <!-- X mark: top-left arm -->
-  <polygon points="24,16 100,100 70,100 16,24" fill="url(#leftGrad)" opacity="0.95"/>
-  <!-- X mark: top-right arm -->
-  <polygon points="176,16 130,100 100,100 184,24" fill="url(#rightGrad)" opacity="0.95"/>
-  <!-- X mark: bottom-left arm -->
-  <polygon points="16,176 100,100 70,100 24,184" fill="url(#leftGrad)" opacity="0.95"/>
-  <!-- X mark: bottom-right arm -->
-  <polygon points="184,176 130,100 100,100 176,184" fill="url(#rightGrad)" opacity="0.95"/>
+  <!-- X arms — crisp layer on top -->
+  <polygon points="130,90 512,512 430,512 90,130" fill="url(#tl)" opacity="0.95"/>
+  <polygon points="894,90 594,512 512,512 934,130" fill="url(#tr)" opacity="0.95"/>
+  <polygon points="90,894 512,512 430,512 130,934" fill="url(#bl)" opacity="0.95"/>
+  <polygon points="934,894 594,512 512,512 894,934" fill="url(#br)" opacity="0.95"/>
 
-  <!-- Inner light rays (thin bright lines through centre) -->
-  <line x1="100" y1="10" x2="100" y2="190" stroke="#5ab8ff" stroke-width="1.5" opacity="0.25"/>
-  <line x1="10" y1="100" x2="190" y2="100" stroke="#5ab8ff" stroke-width="1.5" opacity="0.25"/>
+  <!-- Bright edge lines along the X arms -->
+  <line x1="130" y1="90" x2="512" y2="512" stroke="#90caf9" stroke-width="3" opacity="0.7"/>
+  <line x1="894" y1="90" x2="512" y2="512" stroke="#90caf9" stroke-width="3" opacity="0.7"/>
+  <line x1="90" y1="894" x2="512" y2="512" stroke="#ce93d8" stroke-width="3" opacity="0.6"/>
+  <line x1="934" y1="894" x2="512" y2="512" stroke="#90caf9" stroke-width="3" opacity="0.6"/>
 
-  <!-- Centre glow circle -->
-  <circle cx="100" cy="100" r="28" fill="url(#centreGlow)" opacity="0.9"/>
-  <!-- Bright centre dot -->
-  <circle cx="100" cy="100" r="5" fill="#ffffff" opacity="1"/>
-  <circle cx="100" cy="100" r="2.5" fill="#ffffff" opacity="1"/>
+  <!-- Centre glow -->
+  <circle cx="512" cy="512" r="200" fill="url(#cg)"/>
+  <!-- Soft inner glow blur -->
+  <circle cx="512" cy="512" r="80" fill="#5eaeff" opacity="0.4" filter="url(#blur2)"/>
+  <!-- Centre bright dot -->
+  <circle cx="512" cy="512" r="18" fill="#ffffff" opacity="0.95"/>
+  <circle cx="512" cy="512" r="8" fill="#ffffff"/>
 </svg>

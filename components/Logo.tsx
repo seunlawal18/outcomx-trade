@@ -1,60 +1,71 @@
 // ── OutcomX brand logo ─────────────────────────────────────────────
-// Wordmark: "outcom" in text + gradient X mark matching the icon
+// Wordmark: "outcom" in white + gradient X mark (no background)
+// Matches the official brand asset.
 
-/** The X mark as inline SVG — gradient blue/purple with centre glow */
+/** The gradient X mark — no background, transparent */
 export function LogoMark({ size = 28 }: { size?: number }) {
-  const id = `lm${size}`;
+  // Unique gradient IDs per size to avoid SVG gradient conflicts
+  const uid = `x${size}`;
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 100 100"
       aria-hidden="true"
-      style={{ flexShrink: 0, display: "block" }}
+      style={{ flexShrink: 0, display: "block", overflow: "visible" }}
     >
       <defs>
-        <radialGradient id={`${id}bg`} cx="50%" cy="50%" r="55%">
-          <stop offset="0%" stopColor="#0d2040"/>
-          <stop offset="100%" stopColor="#000000"/>
-        </radialGradient>
-        <linearGradient id={`${id}lg`} x1="0%" y1="50%" x2="100%" y2="50%">
-          <stop offset="0%" stopColor="#6B3FD4"/>
-          <stop offset="100%" stopColor="#2B6FE0"/>
+        <linearGradient id={`${uid}tl`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#4fc3f7"/>
+          <stop offset="100%" stopColor="#1565c0"/>
         </linearGradient>
-        <linearGradient id={`${id}rg`} x1="0%" y1="50%" x2="100%" y2="50%">
-          <stop offset="0%" stopColor="#2B6FE0"/>
-          <stop offset="100%" stopColor="#6B3FD4"/>
+        <linearGradient id={`${uid}tr`} x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#5c6bc0"/>
+          <stop offset="100%" stopColor="#1a237e"/>
         </linearGradient>
-        <radialGradient id={`${id}cg`} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="1"/>
-          <stop offset="35%" stopColor="#7ac8ff" stopOpacity="0.7"/>
-          <stop offset="100%" stopColor="#2B6FE0" stopOpacity="0"/>
-        </radialGradient>
-        <radialGradient id={`${id}ray`} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#4fa8ff" stopOpacity="0.5"/>
-          <stop offset="100%" stopColor="#000510" stopOpacity="0"/>
-        </radialGradient>
+        <linearGradient id={`${uid}bl`} x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#7c4dff"/>
+          <stop offset="100%" stopColor="#283593"/>
+        </linearGradient>
+        <linearGradient id={`${uid}br`} x1="100%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stopColor="#29b6f6"/>
+          <stop offset="100%" stopColor="#0d47a1"/>
+        </linearGradient>
       </defs>
 
-      {/* Background */}
-      <rect width="100" height="100" fill="#000000"/>
-      <circle cx="50" cy="50" r="46" fill={`url(#${id}bg)`}/>
-      <circle cx="50" cy="50" r="36" fill={`url(#${id}ray)`}/>
+      {/* X arms — top-left */}
+      <polygon
+        points="8,4 50,50 40,50 4,8"
+        fill={`url(#${uid}tl)`}
+        opacity="0.95"
+      />
+      {/* top-right */}
+      <polygon
+        points="92,4 60,50 50,50 96,8"
+        fill={`url(#${uid}tr)`}
+        opacity="0.95"
+      />
+      {/* bottom-left */}
+      <polygon
+        points="4,92 50,50 40,50 8,96"
+        fill={`url(#${uid}bl)`}
+        opacity="0.95"
+      />
+      {/* bottom-right */}
+      <polygon
+        points="96,92 60,50 50,50 92,96"
+        fill={`url(#${uid}br)`}
+        opacity="0.95"
+      />
 
-      {/* X arms */}
-      <polygon points="12,8 50,50 35,50 8,12"  fill={`url(#${id}lg)`} opacity="0.95"/>
-      <polygon points="88,8 65,50 50,50 92,12"  fill={`url(#${id}rg)`} opacity="0.95"/>
-      <polygon points="8,88 50,50 35,50 12,92"  fill={`url(#${id}lg)`} opacity="0.95"/>
-      <polygon points="92,88 65,50 50,50 88,92"  fill={`url(#${id}rg)`} opacity="0.95"/>
-
-      {/* Centre glow */}
-      <circle cx="50" cy="50" r="14" fill={`url(#${id}cg)`} opacity="0.9"/>
-      <circle cx="50" cy="50" r="2.5" fill="#ffffff"/>
+      {/* Centre highlight */}
+      <circle cx="50" cy="50" r="7" fill="#90caf9" opacity="0.6"/>
+      <circle cx="50" cy="50" r="3" fill="#ffffff" opacity="0.9"/>
     </svg>
   );
 }
 
-/** Full wordmark — "outcom" + gradient X mark */
+/** Full wordmark — "outcom" text + X mark, no background */
 export default function Logo({
   size = 28,
   textColor,
@@ -62,22 +73,22 @@ export default function Logo({
   size?: number;
   textColor?: string;
 }) {
-  const fontSize = Math.round(size * 0.9);
+  const fontSize = Math.round(size * 0.88);
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 1 }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 0 }}>
       <span
         style={{
           fontSize,
-          fontWeight: 700,
-          letterSpacing: "-0.02em",
+          fontWeight: 600,
+          letterSpacing: "-0.03em",
           lineHeight: 1,
           color: textColor ?? "var(--text-primary)",
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif",
         }}
       >
         outcom
       </span>
-      <LogoMark size={Math.round(size * 1.05)} />
+      <LogoMark size={Math.round(size * 1.1)} />
     </span>
   );
 }
