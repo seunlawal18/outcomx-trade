@@ -15,10 +15,17 @@ interface Slide {
   gradient: string;
   icon: React.ReactNode;
   accent: string;
+  heroBanner?: string | null; // full-bleed background image from admin
 }
 
 // ── Convert a live ApiMarket → Slide ─────────────────────────────
-function marketToSlide(m: ApiMarket): Slide {
+function marketToSlide(m: ApiMarket & {
+  heroBanner?: string | null;
+  heroTag?: string | null;
+  heroSub?: string | null;
+  heroAccent?: string | null;
+  featuredOrder?: number;
+}): Slide {
   const gradients: Record<string, string> = {
     sports:        "linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #1a0533 100%)",
     crypto:        "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
@@ -39,18 +46,20 @@ function marketToSlide(m: ApiMarket): Slide {
   const cat = m.category.toLowerCase();
   const firstOpt = m.options[0];
   const prob = m.probabilities[firstOpt] ?? 50;
+  const accent = m.heroAccent || accents[cat] || "#10b981";
 
   return {
     id: m.id,
-    tag: tags[cat] ?? "🔥 LIVE",
-    tagColor: accents[cat] ?? "#10b981",
+    tag: m.heroTag || tags[cat] || "🔥 LIVE",
+    tagColor: accent,
     headline: m.title,
-    sub: `${firstOpt} is currently at ${prob}% probability. ${m.volume > 0 ? `$${(m.volume / 1000).toFixed(0)}K traded.` : ""}`.trim(),
+    sub: m.heroSub || `${firstOpt} is currently at ${prob}% probability.${m.volume > 0 ? ` $${(m.volume / 1000).toFixed(0)}K traded.` : ""}`,
     cta: "Take a Position",
     href: `/market/${m.id}`,
     gradient: gradients[cat] ?? "linear-gradient(135deg, #0d1b3e 0%, #0a2a5e 50%, #0d1b3e 100%)",
     icon: <TrendingUp size={80} style={{ opacity: 0.1, position: "absolute", right: 40, top: "50%", transform: "translateY(-50%)" }} />,
-    accent: accents[cat] ?? "#10b981",
+    accent,
+    heroBanner: m.heroBanner || m.banner || null,
   };
 }
 
@@ -210,7 +219,7 @@ export default function NewsSlideshow() {
       <div
         key={slide.id}
         style={{
-          background: slide.gradient,
+          background: slide.heroBanner ? "transparent" : slide.gradient,
           padding: "clamp(14px, 3vw, 40px) clamp(16px, 5vw, 60px)",
           minHeight: "clamp(120px, 18vw, 200px)",
           display: "flex",
@@ -222,77 +231,149 @@ export default function NewsSlideshow() {
         }}
         onClick={() => router.push(slide.href)}
       >
-        {/* Background icon */}
-        {slide.icon}
-
-        {/* Decorative circles */}
-        <div style={{
-          position: "absolute", right: -60, top: -60,
-          width: 200, height: 200, borderRadius: "50%",
-          background: `${slide.accent}15`,
-          pointerEvents: "none",
-        }} />
-        <div style={{
-          position: "absolute", right: 60, bottom: -80,
-          width: 160, height: 160, borderRadius: "50%",
-          background: `${slide.accent}10`,
-          pointerEvents: "none",
-        }} />
-
-        {/* Content */}
-        <div style={{ position: "relative", zIndex: 2, maxWidth: 700 }}>
-          <span style={{
-            display: "inline-block",
-            fontSize: "clamp(10px, 1.5vw, 12px)",
-            fontWeight: 700,
-            color: slide.tagColor,
-            marginBottom: 8,
-            letterSpacing: "0.5px",
-          }}>
-            {slide.tag}
-          </span>
-          <h2 style={{
-            fontSize: "clamp(18px, 3.5vw, 32px)",
-            fontWeight: 900,
-            color: "#ffffff",
-            margin: "0 0 8px",
-            lineHeight: 1.2,
-            letterSpacing: "-0.5px",
-          }}>
-            {slide.headline}
-          </h2>
-          <p style={{
-            fontSize: "clamp(11px, 1.8vw, 14px)",
-            color: "rgba(255,255,255,0.7)",
-            margin: "0 0 12px",
-            lineHeight: 1.4,
-            maxWidth: 500,
-          }}
-          className="slideshow-sub"
-          >
-            {slide.sub}
-          </p>
-          <button
-            onClick={(e) => { e.stopPropagation(); router.push(slide.href); }}
+        {/* Full-bleed background image (when heroBanner is set) */}
+        {slide.heroBanner && (
+          <img
+            src={slide.heroBanner}
+            alt=""
             style={{
-              padding: "clamp(8px, 1.5vw, 10px) clamp(16px, 3vw, 24px)",
-              borderRadius: 24,
-              background: slide.accent,
-              border: "none",
-              color: "#fff",
-              fontSize: "clamp(12px, 1.5vw, 14px)",
-              fontWeight: 700,
-              cursor: "pointer",
-              letterSpacing: "0.5px",
-              textTransform: "uppercase",
-              transition: "opacity 0.2s, transform 0.2s",
+              position: "absolute", inset: 0,
+              width: "100%", height: "100%",
+              objectFit: "cover", objectPosition: "center",
+              pointerEvents: "none",
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
-          >
-            {slide.cta} →
-          </button>
-        </div>
+          />
+        )}
+
+        {/* Gradient overlay — only when there is text content */}
+        {(slide.tag || slide.headline || slide.sub) && (
+          <div style={{
+            position: "absolute", inset: 0,
+            background: slide.heroBanner
+              ? "linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.05) 100%)"
+              : "none",
+            pointerEvents: "none",
+            zIndex: 1,
+          }} />
+        )}
+
+        {/* Background icon — only shown when no hero image */}
+        {!slide.heroBanner && slide.icon}
+
+        {/* Decorative circles — only shown when no hero image */}
+        {!slide.heroBanner && (
+          <>
+            <div style={{
+              position: "absolute", right: -60, top: -60,
+              width: 200, height: 200, borderRadius: "50%",
+              background: `${slide.accent}15`,
+              pointerEvents: "none",
+            }} />
+            <div style={{
+              position: "absolute", right: 60, bottom: -80,
+              width: 160, height: 160, borderRadius: "50%",
+              background: `${slide.accent}10`,
+              pointerEvents: "none",
+            }} />
+          </>
+        )}
+
+        {/* Content — only render if any text field is present */}
+        {(slide.tag || slide.headline || slide.sub) && (
+          <div style={{ position: "relative", zIndex: 2, maxWidth: 700 }}>
+            {/* Tag */}
+            {slide.tag && (
+              <span style={{
+                display: "inline-block",
+                fontSize: "clamp(10px, 1.5vw, 12px)",
+                fontWeight: 700,
+                color: slide.tagColor,
+                marginBottom: 8,
+                letterSpacing: "0.5px",
+              }}>
+                {slide.tag}
+              </span>
+            )}
+
+            {/* Headline */}
+            {slide.headline && (
+              <h2 style={{
+                fontSize: "clamp(18px, 3.5vw, 32px)",
+                fontWeight: 900,
+                color: "#ffffff",
+                margin: slide.sub ? "0 0 8px" : "0 0 12px",
+                lineHeight: 1.2,
+                letterSpacing: "-0.5px",
+              }}>
+                {slide.headline}
+              </h2>
+            )}
+
+            {/* Subheadline */}
+            {slide.sub && (
+              <p
+                className="slideshow-sub"
+                style={{
+                  fontSize: "clamp(11px, 1.8vw, 14px)",
+                  color: "rgba(255,255,255,0.75)",
+                  margin: "0 0 14px",
+                  lineHeight: 1.5,
+                  maxWidth: 500,
+                }}
+              >
+                {slide.sub}
+              </p>
+            )}
+
+            {/* CTA button — always shown */}
+            <button
+              onClick={(e) => { e.stopPropagation(); router.push(slide.href); }}
+              style={{
+                padding: "clamp(8px, 1.5vw, 10px) clamp(16px, 3vw, 24px)",
+                borderRadius: 24,
+                background: slide.accent,
+                border: "none",
+                color: "#fff",
+                fontSize: "clamp(12px, 1.5vw, 14px)",
+                fontWeight: 700,
+                cursor: "pointer",
+                letterSpacing: "0.5px",
+                textTransform: "uppercase",
+                transition: "opacity 0.2s, transform 0.2s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+            >
+              Take a Position →
+            </button>
+          </div>
+        )}
+
+        {/* CTA-only when no text fields — pure image slide */}
+        {!slide.tag && !slide.headline && !slide.sub && (
+          <div style={{ position: "relative", zIndex: 2, marginTop: "auto", alignSelf: "flex-end" }}>
+            <button
+              onClick={(e) => { e.stopPropagation(); router.push(slide.href); }}
+              style={{
+                padding: "10px 24px",
+                borderRadius: 24,
+                background: slide.accent,
+                border: "none",
+                color: "#fff",
+                fontSize: 14,
+                fontWeight: 700,
+                cursor: "pointer",
+                letterSpacing: "0.5px",
+                textTransform: "uppercase",
+                transition: "opacity 0.2s, transform 0.2s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+            >
+              Take a Position →
+            </button>
+          </div>
+        )}
 
         {/* Nav arrows */}
         <button
