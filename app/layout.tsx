@@ -11,6 +11,11 @@ import LiveTicker from "@/components/LiveTicker";
 export const metadata: Metadata = {
   title: "OUTCOMX — Trade What Happens Next",
   description: "Africa-first prediction markets. Research real-world events, take a position on what you think will happen, and profit when you're right.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export const viewport: Viewport = {
