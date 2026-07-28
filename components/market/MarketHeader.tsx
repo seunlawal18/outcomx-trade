@@ -56,19 +56,6 @@ export default function MarketHeader({ market }: Props) {
       {/* Main header card */}
       <div className="card" style={{ padding: 0, overflow: "hidden" }}>
 
-        {/* Banner image — shown if admin set one */}
-        {market.banner && (
-          <div style={{ width: "100%", height: 140, overflow: "hidden", position: "relative" }}>
-            <img
-              src={market.banner}
-              alt="Market banner"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-            />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 40%, rgba(13,15,20,0.8))" }} />
-          </div>
-        )}
-
         <div style={{ padding: "20px 24px" }}>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
           {/* Category icon */}
