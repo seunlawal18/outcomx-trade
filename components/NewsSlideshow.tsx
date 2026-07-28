@@ -10,7 +10,7 @@ interface Slide {
   tagColor: string;
   headline: string;
   sub: string;
-  cta: string;
+  cta: string | null;
   href: string;
   gradient: string;
   icon: React.ReactNode;
@@ -36,8 +36,8 @@ function promoToSlide(p: {
     tagColor: p.accentColor || "#6c63ff",
     headline: p.title,
     sub: p.subtitle || "",
-    cta: p.ctaLabel || "Explore Markets",
-    href: p.ctaHref || "/",
+    cta: p.ctaLabel || null,
+    href: p.ctaHref || '/',
     gradient: p.gradient || "linear-gradient(135deg, #0d1b3e 0%, #0a2a5e 50%, #0d1b3e 100%)",
     icon: null,
     accent: p.accentColor || "#6c63ff",
@@ -392,6 +392,7 @@ export default function NewsSlideshow() {
               </p>
             )}
 
+            {slide.cta && (
             {/* CTA button */}
             <button
               onClick={(e) => { e.stopPropagation(); router.push(slide.href); }}
@@ -412,8 +413,9 @@ export default function NewsSlideshow() {
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             >
-              Take a Position →
+              {slide.cta || 'Explore ?'}
             </button>
+            )}
           </div>
         )}
 
@@ -438,7 +440,7 @@ export default function NewsSlideshow() {
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             >
-              Take a Position →
+              {slide.cta || 'Explore ?'}
             </button>
           </div>
         )}
