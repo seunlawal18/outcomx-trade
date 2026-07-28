@@ -301,8 +301,8 @@ export async function apiGetHeroSlides() {
         slideOrder: number;
       }
     // Featured market slide
-    | (ApiMarket & { type: "market"; slideOrder?: number })
-  >>("/api/slides");
+    | (ApiMarket & { type: "market"; featuredOrder?: number })
+  >>("/api/hero-slides");
 }
 
 // ── Featured markets (legacy — kept for backwards compat) ────────
