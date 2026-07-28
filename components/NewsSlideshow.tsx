@@ -172,22 +172,44 @@ export default function NewsSlideshow() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Fetch all hero slides (promo + featured markets) from /api/slides
+  // Fetch all hero slides (promo + featured markets) from /api/hero-slides
+  // Retries once after 3s if first attempt fails — shows nothing while waiting.
+  // Falls back to static slides only after both attempts fail.
   useEffect(() => {
-    apiGetHeroSlides().then(res => {
-      if (res.ok && res.data && res.data.length > 0) {
-        const converted = res.data.map(item => {
-          if (item.type === "promo") return promoToSlide(item);
-          return marketToSlide(item as ApiMarket & { type: "market" });
-        });
-        setSlides(converted);
-      } else {
-        setSlides(FALLBACK_SLIDES);
+    let cancelled = false;
+
+    const fetchSlides = async (isRetry = false) => {
+      try {
+        const res = await apiGetHeroSlides();
+        if (cancelled) return;
+        if (res.ok && res.data && res.data.length > 0) {
+          const converted = res.data.map(item => {
+            if (item.type === "promo") return promoToSlide(item);
+            return marketToSlide(item as ApiMarket & { type: "market" });
+          });
+          setSlides(converted);
+          setCurrent(0);
+        } else if (!isRetry) {
+          // First attempt empty — retry after 3s
+          setTimeout(() => { if (!cancelled) fetchSlides(true); }, 3000);
+        } else {
+          // Both failed — use fallback
+          setSlides(FALLBACK_SLIDES);
+          setCurrent(0);
+        }
+      } catch {
+        if (cancelled) return;
+        if (!isRetry) {
+          setTimeout(() => { if (!cancelled) fetchSlides(true); }, 3000);
+        } else {
+          setSlides(FALLBACK_SLIDES);
+          setCurrent(0);
+        }
       }
-      setCurrent(0);
-    }).catch(() => {
-      setSlides(FALLBACK_SLIDES);
-    });
+    };
+
+    fetchSlides();
+    return () => { cancelled = true; };
   }, []);
 
   // Auto-advance + progress bar
