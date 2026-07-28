@@ -55,16 +55,16 @@ function marketToSlide(m: ApiMarket & {
 
   return {
     id: m.id,
-    tag: m.heroTag || tags[cat] || "🔥 LIVE",
+    tag: m.heroTag || tags[cat] || "OUTCOMX",
     tagColor: accent,
     headline: m.title,
     sub: m.heroSub || `${firstOpt} is currently at ${prob}% probability.${m.volume > 0 ? ` $${(m.volume / 1000).toFixed(0)}K traded.` : ""}`,
     cta: "Take a Position",
-    href: `/market/${m.id}`,
+    href: (m as any).heroHref || `/market/${m.id}`,
     gradient: gradients[cat] ?? "linear-gradient(135deg, #0d1b3e 0%, #0a2a5e 50%, #0d1b3e 100%)",
     icon: <TrendingUp size={80} style={{ opacity: 0.1, position: "absolute", right: 40, top: "50%", transform: "translateY(-50%)" }} />,
     accent,
-    heroBanner: m.heroBanner || m.banner || null,
+    heroBanner: (m as any).heroBanner || m.banner || null,
   };
 }
 
