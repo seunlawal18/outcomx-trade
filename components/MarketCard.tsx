@@ -82,10 +82,10 @@ export default function MarketCard({ market }: Props) {
         <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
           {/* Icon / image */}
           {market.image ? (
-            <img src={market.image} alt={market.title} style={{ width: 40, height: 40, borderRadius: 9, flexShrink: 0, objectFit: "cover", border: "1px solid var(--border)" }} />
+            <img src={market.image} alt={market.title} style={{ width: 56, height: 56, borderRadius: 10, flexShrink: 0, objectFit: "cover", border: "1px solid var(--border)" }} />
           ) : (
-            <div style={{ width: 40, height: 40, borderRadius: 9, flexShrink: 0, background: "var(--bg-card-hover)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid var(--border)" }}>
-              <CategoryIcon size={18} color="var(--text-secondary)" />
+            <div style={{ width: 56, height: 56, borderRadius: 10, flexShrink: 0, background: "var(--bg-card-hover)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid var(--border)" }}>
+              <CategoryIcon size={22} color="var(--text-secondary)" />
             </div>
           )}
 
