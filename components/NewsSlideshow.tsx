@@ -227,7 +227,7 @@ export default function NewsSlideshow() {
         style={{
           background: slide.heroBanner ? "transparent" : slide.gradient,
           padding: "clamp(12px, 2.5vw, 36px) clamp(14px, 4vw, 56px)",
-          minHeight: "clamp(140px, 22vw, 220px)",
+          minHeight: "clamp(120px, 20vw, 220px)",
           display: "flex", alignItems: "center",
           position: "relative", overflow: "hidden",
           cursor: "pointer", animation: "fadeIn 0.4s ease",
@@ -330,8 +330,8 @@ export default function NewsSlideshow() {
       <style>{`
         @media (max-width: 600px) {
           .slideshow-sub { display: none !important; }
-          .slideshow-headline { font-size: 15px !important; margin-bottom: 6px !important; }
-          .slideshow-cta { padding: 5px 12px !important; font-size: 11px !important; }
+          .slideshow-headline { font-size: 13px !important; margin-bottom: 5px !important; line-height: 1.2 !important; }
+          .slideshow-cta { padding: 4px 10px !important; font-size: 10px !important; }
         }
       `}</style>
     </div>
