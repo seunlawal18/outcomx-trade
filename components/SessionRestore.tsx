@@ -30,8 +30,6 @@ export default function SessionRestore() {
         if (meRes.ok && meRes.data) {
           const user = meRes.data;
           const tradesRes = await apiGetMyTrades();
-          // Preserve any already-chosen local display-currency preference —
-          // same rule userLogin/userRegister follow, see lib/store.ts.
           const existingCurrency = useStore.getState().userProfile.displayCurrency;
           useStore.setState({
             isLoggedIn: true,
@@ -42,13 +40,23 @@ export default function SessionRestore() {
             userProfile: { ...toProfile(user), displayCurrency: existingCurrency ?? "USD" },
           });
         } else {
-          // User token invalid/expired — clear user session only
+          // Token invalid/expired — clear session
           useStore.setState({ isLoggedIn: false, userEmail: "", trades: [] });
           localStorage.removeItem("outcomx_token");
         }
       } else {
-        // No user token — ensure user is logged out
-        useStore.setState({ isLoggedIn: false, userEmail: "", trades: [] });
+        // No JWT token — but DON'T clear if already logged in via demo (offline) mode.
+        // Demo sessions have no JWT; they persist via zustand/persist in localStorage.
+        // Only clear if the persisted state says not logged in anyway.
+        const { isLoggedIn, apiOnline } = useStore.getState();
+        if (isLoggedIn && !apiOnline) {
+          // Demo session — keep it, don't touch it
+        } else if (!isLoggedIn) {
+          // Already logged out — nothing to do
+        } else {
+          // Was online session with no token — clear
+          useStore.setState({ isLoggedIn: false, userEmail: "", trades: [] });
+        }
       }
     };
 

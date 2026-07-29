@@ -260,6 +260,7 @@ function TradeForm({
           disabled={!amount || amt < minStake}
           loading={status === "loading"}
           onConfirm={onTrade}
+          onReset={() => setAmount("")}
         />
       ) : (
       <button

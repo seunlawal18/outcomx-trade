@@ -8,56 +8,60 @@ interface Props {
   onConfirm: () => void;
   disabled?: boolean;
   loading?: boolean;
+  onReset?: () => void; // called after success so parent can close sheet
 }
 
-export default function SwipeToTrade({ label, accent, onConfirm, disabled = false, loading = false }: Props) {
+export default function SwipeToTrade({ label, accent, onConfirm, disabled = false, loading = false, onReset }: Props) {
   const [dragX, setDragX] = useState(0);
   const [phase, setPhase] = useState<"idle" | "dragging" | "locking" | "locked">("idle");
   const trackRef = useRef<HTMLDivElement>(null);
-  const thumbRef = useRef<HTMLDivElement>(null);
   const startX = useRef<number | null>(null);
   const animFrame = useRef<number | null>(null);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Track width minus thumb size minus padding
   const getThreshold = () => (trackRef.current?.offsetWidth ?? 300) - 56 - 8;
-
   const progress = dragX / Math.max(getThreshold(), 1);
 
-  // Vibrate on lock (mobile haptic)
   const vibrate = (pattern: number[]) => {
-    if (typeof navigator !== "undefined" && navigator.vibrate) {
-      navigator.vibrate(pattern);
-    }
+    if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(pattern);
   };
+
+  // Reset to idle — called by parent after sheet closes
+  const reset = useCallback(() => {
+    setDragX(0);
+    setPhase("idle");
+    if (animFrame.current) cancelAnimationFrame(animFrame.current);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+  }, []);
 
   const snapToEnd = useCallback(() => {
     const threshold = getThreshold();
     setDragX(threshold);
     setPhase("locking");
-    vibrate([30, 20, 60]); // lock haptic pattern
+    vibrate([30, 20, 60]);
 
-    setTimeout(() => {
+    // Show locked state briefly, then fire onConfirm and auto-reset
+    resetTimer.current = setTimeout(() => {
       setPhase("locked");
       onConfirm();
+      // Give user 1.2s to see the success, then reset + close
+      resetTimer.current = setTimeout(() => {
+        reset();
+        onReset?.();
+      }, 1200);
     }, 300);
-  }, [onConfirm]);
+  }, [onConfirm, onReset, reset]);
 
   const snapBack = useCallback(() => {
     setPhase("idle");
-    // Animate back
-    const start = Date.now();
     const from = dragX;
+    const start = Date.now();
     const animate = () => {
-      const elapsed = Date.now() - start;
-      const t = Math.min(elapsed / 250, 1);
-      const ease = 1 - Math.pow(1 - t, 3); // ease-out cubic
-      const newX = from * (1 - ease);
-      setDragX(newX);
-      if (t < 1) {
-        animFrame.current = requestAnimationFrame(animate);
-      } else {
-        setDragX(0);
-      }
+      const t = Math.min((Date.now() - start) / 250, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      setDragX(from * (1 - ease));
+      if (t < 1) animFrame.current = requestAnimationFrame(animate);
+      else setDragX(0);
     };
     animFrame.current = requestAnimationFrame(animate);
   }, [dragX]);
@@ -67,7 +71,7 @@ export default function SwipeToTrade({ label, accent, onConfirm, disabled = fals
     if (animFrame.current) cancelAnimationFrame(animFrame.current);
     startX.current = clientX - dragX;
     setPhase("dragging");
-    vibrate([10]); // light haptic on start
+    vibrate([10]);
   }, [disabled, loading, phase, dragX]);
 
   const handleMove = useCallback((clientX: number) => {
@@ -75,34 +79,20 @@ export default function SwipeToTrade({ label, accent, onConfirm, disabled = fals
     const threshold = getThreshold();
     const newX = Math.max(0, Math.min(clientX - startX.current, threshold));
     setDragX(newX);
-
-    // Micro-haptic at 75% to signal "almost there"
-    if (newX / threshold > 0.75 && newX / threshold < 0.8) {
-      vibrate([5]);
-    }
-
-    if (newX >= threshold) {
-      startX.current = null;
-      snapToEnd();
-    }
+    if (newX / threshold > 0.75 && newX / threshold < 0.82) vibrate([5]);
+    if (newX >= threshold) { startX.current = null; snapToEnd(); }
   }, [phase, snapToEnd]);
 
   const handleEnd = useCallback(() => {
     if (startX.current === null) return;
     startX.current = null;
-    if (phase === "dragging") {
-      const threshold = getThreshold();
-      if (dragX / threshold > 0.6) {
-        // Past 60% — snap to end
-        snapToEnd();
-      } else {
-        snapBack();
-      }
-    }
+    if (phase !== "dragging") return;
+    dragX / getThreshold() > 0.6 ? snapToEnd() : snapBack();
   }, [phase, dragX, snapToEnd, snapBack]);
 
-  useEffect(() => {
-    return () => { if (animFrame.current) cancelAnimationFrame(animFrame.current); };
+  useEffect(() => () => {
+    if (animFrame.current) cancelAnimationFrame(animFrame.current);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
   }, []);
 
   const onTouchStart = (e: React.TouchEvent) => { e.preventDefault(); handleStart(e.touches[0].clientX); };
@@ -112,30 +102,18 @@ export default function SwipeToTrade({ label, accent, onConfirm, disabled = fals
   const onMouseMove  = (e: React.MouseEvent) => { if (startX.current !== null) handleMove(e.clientX); };
   const onMouseUp    = () => handleEnd();
 
-  const isLocked = phase === "locked";
+  const isLocked  = phase === "locked";
   const isLocking = phase === "locking";
   const isDragging = phase === "dragging";
-
-  const thumbColor = disabled ? "var(--border)" : isLocked ? "#10b981" : accent;
-  const trackBg = disabled
-    ? "var(--bg-card-hover)"
-    : isLocked
-    ? "rgba(16,185,129,0.15)"
-    : `${accent}18`;
 
   return (
     <div
       ref={trackRef}
       style={{
-        position: "relative",
-        width: "100%",
-        height: 52,
-        borderRadius: 26,
-        background: trackBg,
-        border: `1.5px solid ${disabled ? "var(--border)" : isLocked ? "rgba(16,185,129,0.4)" : `${accent}40`}`,
-        overflow: "hidden",
-        userSelect: "none",
-        touchAction: "none",
+        position: "relative", width: "100%", height: 52, borderRadius: 26,
+        background: isLocked ? "rgba(16,185,129,0.15)" : disabled ? "var(--bg-card-hover)" : `${accent}18`,
+        border: `1.5px solid ${isLocked ? "rgba(16,185,129,0.4)" : disabled ? "var(--border)" : `${accent}40`}`,
+        overflow: "hidden", userSelect: "none", touchAction: "none",
         transition: "background 0.3s, border-color 0.3s",
       }}
       onMouseMove={onMouseMove}
@@ -144,114 +122,94 @@ export default function SwipeToTrade({ label, accent, onConfirm, disabled = fals
     >
       {/* Progress fill */}
       <div style={{
-        position: "absolute",
-        left: 0, top: 0, bottom: 0,
+        position: "absolute", left: 0, top: 0, bottom: 0,
         width: isLocked ? "100%" : `${4 + dragX + 48}px`,
-        background: isLocked
-          ? "rgba(16,185,129,0.2)"
-          : `${accent}${Math.round(progress * 35 + 10).toString(16).padStart(2, "0")}`,
+        background: isLocked ? "rgba(16,185,129,0.2)" : `${accent}${Math.round(progress * 35 + 10).toString(16).padStart(2, "0")}`,
         borderRadius: 26,
         transition: isDragging ? "none" : "width 0.3s ease, background 0.3s ease",
       }} />
 
-      {/* Label text */}
-      <div style={{
-        position: "absolute", inset: 0,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: 13, fontWeight: 700,
-        color: isLocked
-          ? "#10b981"
-          : disabled
-          ? "var(--text-muted)"
-          : progress > 0.45
-          ? "#fff"
-          : "var(--text-secondary)",
-        pointerEvents: "none",
-        paddingLeft: 52,
-        paddingRight: 16,
-        letterSpacing: "0.3px",
-        transition: "color 0.2s, opacity 0.2s",
-        opacity: isLocking ? 0 : 1,
-      }}>
-        {isLocked ? "Trade Locked In ✓" : label}
-      </div>
-
-      {/* Lock icon hint at the end */}
-      {!isLocked && !disabled && (
+      {/* LOCKED STATE — shown alone, no overlap */}
+      {isLocked && (
         <div style={{
-          position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
-          opacity: progress > 0.5 ? 1 : 0.2,
-          transition: "opacity 0.2s",
-          pointerEvents: "none",
+          position: "absolute", inset: 0, display: "flex",
+          alignItems: "center", justifyContent: "center", gap: 8,
+          animation: "lockIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards",
+          zIndex: 3,
         }}>
-          <Lock size={14} color={progress > 0.8 ? accent : "var(--text-muted)"} />
+          <CheckCircle2 size={20} color="#10b981" />
+          <span style={{ fontSize: 14, fontWeight: 800, color: "#10b981" }}>Trade Locked In</span>
         </div>
       )}
 
-      {/* Thumb */}
-      {!isLocked ? (
-        <div
-          ref={thumbRef}
-          style={{
-            position: "absolute",
-            left: 4 + dragX,
-            top: 4,
-            width: 44,
-            height: 44,
-            borderRadius: "50%",
-            background: thumbColor,
+      {/* NORMAL STATE — label + thumb */}
+      {!isLocked && (
+        <>
+          {/* Label */}
+          <div style={{
+            position: "absolute", inset: 0,
             display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: isDragging
-              ? `0 4px 20px ${accent}60, 0 2px 8px rgba(0,0,0,0.3)`
-              : "0 2px 8px rgba(0,0,0,0.25)",
-            transition: isDragging ? "none" : "left 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s",
-            cursor: disabled ? "not-allowed" : "grab",
-            zIndex: 2,
-            transform: isDragging ? "scale(1.08)" : isLocking ? "scale(1.15)" : "scale(1)",
-          }}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-          onMouseDown={onMouseDown}
-        >
-          {isDragging || phase === "idle"
-            ? <ChevronRight size={20} color="#fff" strokeWidth={2.5} />
-            : <Lock size={18} color="#fff" />
-          }
-        </div>
-      ) : (
-        // Locked state — full green check
-        <div style={{
-          position: "absolute", inset: 0,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          gap: 8,
-          animation: "lockIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards",
-        }}>
-          <CheckCircle2 size={22} color="#10b981" />
-          <span style={{ fontSize: 14, fontWeight: 800, color: "#10b981" }}>
-            Trade Locked In
-          </span>
-        </div>
+            fontSize: 13, fontWeight: 700,
+            color: disabled ? "var(--text-muted)" : progress > 0.45 ? "#fff" : "var(--text-secondary)",
+            pointerEvents: "none",
+            paddingLeft: 52, paddingRight: 20,
+            letterSpacing: "0.2px",
+            opacity: isLocking ? 0 : 1,
+            transition: "opacity 0.2s, color 0.2s",
+          }}>
+            {label}
+          </div>
+
+          {/* Lock hint at right edge */}
+          {!disabled && (
+            <div style={{
+              position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
+              opacity: progress > 0.5 ? Math.min((progress - 0.5) * 2, 1) : 0.15,
+              transition: "opacity 0.15s", pointerEvents: "none",
+            }}>
+              <Lock size={13} color={progress > 0.75 ? accent : "var(--text-muted)"} />
+            </div>
+          )}
+
+          {/* Thumb */}
+          <div
+            style={{
+              position: "absolute", left: 4 + dragX, top: 4,
+              width: 44, height: 44, borderRadius: "50%",
+              background: disabled ? "var(--border)" : accent,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: isDragging ? `0 4px 20px ${accent}60, 0 2px 8px rgba(0,0,0,0.3)` : "0 2px 8px rgba(0,0,0,0.25)",
+              transition: isDragging ? "none" : "left 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s, transform 0.15s",
+              transform: isDragging ? "scale(1.08)" : isLocking ? "scale(1.2)" : "scale(1)",
+              cursor: disabled ? "not-allowed" : "grab",
+              zIndex: 2,
+            }}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+            onMouseDown={onMouseDown}
+          >
+            {isLocking
+              ? <Lock size={18} color="#fff" />
+              : <ChevronRight size={20} color="#fff" strokeWidth={2.5} />
+            }
+          </div>
+        </>
       )}
 
+      {/* Loading overlay */}
       {loading && (
         <div style={{
-          position: "absolute", inset: 0, borderRadius: 26,
-          background: "rgba(0,0,0,0.4)",
-          display: "flex", alignItems: "center", justifyContent: "center",
+          position: "absolute", inset: 0, borderRadius: 26, background: "rgba(0,0,0,0.45)",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 4,
         }}>
           <span style={{ width: 18, height: 18, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", display: "inline-block", animation: "spin 0.8s linear infinite" }} />
         </div>
       )}
 
       <style>{`
-        @keyframes lockIn {
-          from { opacity: 0; transform: scale(0.8); }
-          to   { opacity: 1; transform: scale(1); }
-        }
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
+        @keyframes lockIn { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+        @keyframes spin   { to { transform:rotate(360deg); } }
       `}</style>
     </div>
   );
