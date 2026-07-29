@@ -6,6 +6,7 @@ import { useStore } from "@/lib/store";
 import { useCurrency } from "@/lib/useCurrency";
 import LoginRequiredModal from "@/components/LoginRequiredModal";
 import Countdown from "@/components/Countdown";
+import SwipeToTrade from "@/components/SwipeToTrade";
 import {
   Wallet, AlertCircle, CheckCircle2, Lock,
   TrendingUp, TrendingDown, Zap, X,
@@ -251,7 +252,15 @@ function TradeForm({
         </div>
       )}
 
-      {/* Submit */}
+      {/* Submit — swipe on mobile (compact), button on desktop */}
+      {compact ? (
+        <SwipeToTrade
+          label={`Swipe to Trade ${isMultiYesNo ? `${selectedOption} ${yesNoSide === "yes" ? "Yes" : "No"}` : selectedOption}${amt >= minStake ? ` · ${fmt(amt)}` : ""}`}
+          accent="var(--accent)"
+          disabled={status === "loading" || !amount || amt < minStake}
+          onConfirm={onTrade}
+        />
+      ) : (
       <button
         className="btn-emerald"
         onClick={onTrade}
@@ -271,6 +280,7 @@ function TradeForm({
           </>
         )}
       </button>
+      )}
     </div>
   );
 }
