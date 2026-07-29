@@ -257,7 +257,8 @@ function TradeForm({
         <SwipeToTrade
           label={`Swipe to Trade ${isMultiYesNo ? `${selectedOption} ${yesNoSide === "yes" ? "Yes" : "No"}` : selectedOption}${amt >= minStake ? ` · ${fmt(amt)}` : ""}`}
           accent="var(--accent)"
-          disabled={status === "loading" || !amount || amt < minStake}
+          disabled={!amount || amt < minStake}
+          loading={status === "loading"}
           onConfirm={onTrade}
         />
       ) : (
