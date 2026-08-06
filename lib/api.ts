@@ -309,3 +309,8 @@ export async function apiGetHeroSlides() {
 export async function apiGetFeaturedMarkets() {
   return apiFetch<ApiMarket[]>("/api/markets/featured");
 }
+
+// ── Trending markets (spotlight section) ─────────────────────────
+export async function apiGetTrendingMarkets() {
+  return apiFetch<ApiMarket[]>("/api/markets/trending");
+}

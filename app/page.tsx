@@ -9,9 +9,10 @@ import Footer from "@/components/Footer";
 import DurationSidebar from "@/components/DurationSidebar";
 import MobileDurationBar from "@/components/MobileDurationBar";
 import NewsSlideshow from "@/components/NewsSlideshow";
+import TrendingSpotlight from "@/components/TrendingSpotlight";
 import { MarketGridSkeleton } from "@/components/MarketCardSkeleton";
 import { parseApiDate } from "@/lib/types";
-import { Flame, TrendingUp, ArrowRight, Clock } from "lucide-react";
+import { TrendingUp, ArrowRight, Clock } from "lucide-react";
 
 // ── Empty state ──────────────────────────────────────────────────
 function EmptyState({ searchQuery, activeCategory }: { searchQuery: string; activeCategory: string }) {
@@ -73,12 +74,8 @@ export default function HomePage() {
     });
   }, [markets, activeCategory, activeDuration, searchQuery]);
 
-  const trending = useMemo(
-    () => markets.filter((m) => m.trending && m.status === "open"),
-    [markets]
-  );
-
-  const showTrending = activeCategory === "all" && activeDuration === "all" && !searchQuery && trending.length > 0;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const showTrending = false; // replaced by TrendingSpotlight component
 
   const sectionLabel = searchQuery
     ? `Results for "${searchQuery}"`
@@ -103,20 +100,9 @@ export default function HomePage() {
 
         <main style={{ flex: 1, minWidth: 0, padding: "24px 20px 64px", maxWidth: 1200, margin: "0 auto" }}>
 
-          {/* Trending */}
-          {showTrending && (
-            <section style={{ marginBottom: 36 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-                <Flame size={17} color="#f59e0b" />
-                <h2 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)", margin: 0 }}>Trending</h2>
-                <span style={{ fontSize: 12, color: "var(--text-secondary)", background: "var(--bg-card-hover)", border: "1px solid var(--border)", padding: "1px 8px", borderRadius: 20 }}>
-                  {trending.length}
-                </span>
-              </div>
-              <div className="markets-grid">
-                {trending.slice(0, 4).map((m) => <MarketCard key={m.id} market={m} />)}
-              </div>
-            </section>
+          {/* Trending Spotlight — above all markets */}
+          {activeCategory === "all" && activeDuration === "all" && !searchQuery && (
+            <TrendingSpotlight />
           )}
 
           {/* Main section */}
